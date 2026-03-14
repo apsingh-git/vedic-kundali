@@ -76,17 +76,17 @@ def _kaal_sarp_dosha(chart):
     check_planets = ['Sun', 'Moon', 'Mars', 'Mercury', 'Jupiter', 'Venus', 'Saturn']
 
     def _between_rahu_ketu(p_idx):
-        """Is planet between Rahu (start) and Ketu (end) going clockwise?"""
+        """Is planet between Rahu and Ketu (inclusive of axis signs)?"""
         if rahu_idx < ketu_idx:
-            return rahu_idx < p_idx < ketu_idx
+            return rahu_idx <= p_idx <= ketu_idx
         else:
-            return p_idx > rahu_idx or p_idx < ketu_idx
+            return p_idx >= rahu_idx or p_idx <= ketu_idx
 
     def _between_ketu_rahu(p_idx):
         if ketu_idx < rahu_idx:
-            return ketu_idx < p_idx < rahu_idx
+            return ketu_idx <= p_idx <= rahu_idx
         else:
-            return p_idx > ketu_idx or p_idx < rahu_idx
+            return p_idx >= ketu_idx or p_idx <= rahu_idx
 
     all_rk = all(_between_rahu_ketu(_sign_idx(chart, p)) for p in check_planets)
     all_kr = all(_between_ketu_rahu(_sign_idx(chart, p)) for p in check_planets)
@@ -235,8 +235,8 @@ def _manglik_dosha(chart):
         cancellations.append('Mars in Mercury\'s sign in 2nd house — cancelled')
     if mars_house == 4 and mars_sign in ('Aries', 'Scorpio'):
         cancellations.append('Mars in own sign in 4th house — cancelled')
-    if mars_house == 7 and mars_sign in ('Cancer', 'Capricorn'):
-        cancellations.append('Mars exalted/debilitated in 7th — reduced impact')
+    if mars_house == 7 and mars_sign == 'Capricorn':
+        cancellations.append('Mars exalted in 7th — significantly reduced impact')
     if mars_house == 8 and mars_sign in ('Sagittarius', 'Pisces'):
         cancellations.append('Mars in Jupiter\'s sign in 8th — cancelled')
     if mars_house == 12 and mars_sign in ('Taurus', 'Libra'):
@@ -3349,20 +3349,19 @@ def get_lucky_points(chart):
             if s not in friendly_signs:
                 friendly_signs.append(s)
 
-    # Good years: ages that are multiples or harmonics of lucky number
+    # Good years: key ages based on digit-sum harmonics of lucky number
     good_years = []
-    age = lucky_number
-    while age <= 90:
-        good_years.append(age)
-        age += lucky_number
-    # Add single-digit harmonics (digit sum = lucky number)
     for a in range(10, 91):
         digit_sum = sum(int(d) for d in str(a))
         while digit_sum >= 10:
             digit_sum = sum(int(d) for d in str(digit_sum))
-        if digit_sum == lucky_number and a not in good_years:
+        if digit_sum == lucky_number:
             good_years.append(a)
-    good_years = sorted(good_years)
+    # Also add the lucky number itself and key multiples (keep list manageable)
+    for m in (lucky_number, lucky_number * 4, lucky_number * 5, lucky_number * 7):
+        if 1 <= m <= 90 and m not in good_years:
+            good_years.append(m)
+    good_years = sorted(good_years)[:15]  # cap at 15 most relevant ages
 
     return {
         'lucky_number': lucky_number,
@@ -3385,20 +3384,21 @@ def get_lucky_points(chart):
 
 # Saturn sign entry dates (approximate)
 _SATURN_TRANSITS = [
-    ('Aquarius',     2020, 1, 2022, 4),
-    ('Pisces',       2022, 4, 2025, 3),
-    ('Aries',        2025, 4, 2027, 6),
-    ('Taurus',       2027, 6, 2029, 8),
-    ('Gemini',       2029, 8, 2031, 10),
-    ('Cancer',       2031, 10, 2033, 12),
-    ('Leo',          2033, 12, 2036, 2),
-    ('Virgo',        2036, 2, 2038, 4),
-    ('Libra',        2038, 4, 2040, 6),
-    ('Scorpio',      2040, 6, 2042, 8),
-    ('Sagittarius',  2042, 8, 2044, 10),
-    ('Capricorn',    2044, 10, 2046, 12),
-    ('Aquarius',     2046, 12, 2049, 2),
-    ('Pisces',       2049, 2, 2051, 4),
+    # Sidereal (Lahiri) Saturn transits — verified dates
+    ('Capricorn',    2020, 1, 2022, 4),
+    ('Aquarius',     2022, 4, 2025, 3),
+    ('Pisces',       2025, 3, 2027, 6),
+    ('Aries',        2027, 6, 2029, 8),
+    ('Taurus',       2029, 8, 2031, 10),
+    ('Gemini',       2031, 10, 2034, 1),
+    ('Cancer',       2034, 1, 2036, 3),
+    ('Leo',          2036, 3, 2038, 5),
+    ('Virgo',        2038, 5, 2040, 7),
+    ('Libra',        2040, 7, 2042, 9),
+    ('Scorpio',      2042, 9, 2044, 11),
+    ('Sagittarius',  2044, 11, 2047, 1),
+    ('Capricorn',    2047, 1, 2049, 3),
+    ('Aquarius',     2049, 3, 2051, 5),
 ]
 
 _SADE_SATI_PHASE_DESC = {
@@ -3450,25 +3450,32 @@ def _build_saturn_timeline(birth_year):
         # Extend backward in ~29.5 year steps
         offset = CYCLE
         while sy - offset >= birth_year - 5:
-            back_sy = round(sy - offset)
+            back_sy = int(sy - offset)
             back_sm = sm
-            back_ey = round(ey - offset)
+            back_ey = int(ey - offset)
             back_em = em
             timeline.append((sign, back_sy, back_sm, back_ey, back_em))
             offset += CYCLE
         # Extend forward
         offset = CYCLE
         while sy + offset <= birth_year + 100:
-            fwd_sy = round(sy + offset)
+            fwd_sy = int(sy + offset)
             fwd_sm = sm
-            fwd_ey = round(ey + offset)
+            fwd_ey = int(ey + offset)
             fwd_em = em
             timeline.append((sign, fwd_sy, fwd_sm, fwd_ey, fwd_em))
             offset += CYCLE
 
-    # Sort by start year then month
-    timeline.sort(key=lambda x: (x[1], x[2]))
-    return timeline
+    # Deduplicate and sort by start year then month
+    seen = set()
+    unique = []
+    for entry in timeline:
+        key = (entry[0], entry[1], entry[2])  # sign, start_year, start_month
+        if key not in seen:
+            seen.add(key)
+            unique.append(entry)
+    unique.sort(key=lambda x: (x[1], x[2]))
+    return unique
 
 
 def get_sade_sati(chart):

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vedic Birth Chart Generator</title>
+<style>
+  :root {
+    --bg: #0f0f1a;
+    --card: #1a1a2e;
+    --border: #2a2a4a;
+    --accent: #e94560;
+    --accent-soft: rgba(233, 69, 96, 0.15);
+    --green: #4ecca3;
+    --gold: #f9c74f;
+    --text: #e0e0e0;
+    --text-dim: #8888a0;
+    --text-bright: #ffffff;
+    --radius: 14px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 440px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  .header h1 {
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: var(--text-bright);
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  .header p {
+    font-size: 0.82rem;
+    color: var(--text-dim);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 24px;
+  }
+
+  .field {
+    margin-bottom: 20px;
+  }
+
+  .field label {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+
+  .field input {
+    width: 100%;
+    padding: 14px 16px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-bright);
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+
+  .field input:focus {
+    border-color: var(--accent);
+  }
+
+  .field input::placeholder {
+    color: var(--text-dim);
+  }
+
+  /* Fix date/time input colors on mobile */
+  .field input[type="date"],
+  .field input[type="time"] {
+    color-scheme: dark;
+  }
+
+  .field-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .field-hint {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    margin-top: 4px;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    letter-spacing: 1px;
+    transition: opacity 0.2s, transform 0.1s;
+    margin-top: 8px;
+  }
+
+  .btn:hover { opacity: 0.9; }
+  .btn:active { transform: scale(0.98); }
+
+  .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .errors {
+    background: rgba(233, 69, 96, 0.1);
+    border: 1px solid rgba(233, 69, 96, 0.3);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+  }
+
+  .errors li {
+    color: var(--accent);
+    font-size: 0.85rem;
+    margin: 2px 0;
+    list-style: none;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+
+  .spinner {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    margin: 0 auto;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .generating .btn-text { display: none; }
+  .generating .spinner { display: inline-block; }
+  .generating .btn { pointer-events: none; opacity: 0.7; }
+
+  .note {
+    background: rgba(78, 204, 163, 0.08);
+    border: 1px solid rgba(78, 204, 163, 0.2);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-top: 20px;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>Kundali</h1>
+    <p>Vedic Birth Chart</p>
+  </div>
+
+  {% if errors %}
+  <div class="errors">
+    {% for e in errors %}
+    <li>{{ e }}</li>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <form class="card" id="chartForm" action="/generate" method="POST">
+    <div class="field">
+      <label>Full Name</label>
+      <input type="text" name="name" placeholder="Enter full name" value="{{ name or '' }}" required autocomplete="name">
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Date of Birth</label>
+        <input type="date" name="date" value="{{ date or '' }}" required min="1900-01-01" max="2030-12-31">
+      </div>
+      <div class="field">
+        <label>Time of Birth</label>
+        <input type="time" name="time" value="{{ time or '' }}" required>
+        <div class="field-hint">24-hour format</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Place of Birth</label>
+      <input type="text" name="city" placeholder="City name (e.g. Mumbai, Delhi)" value="{{ city or '' }}" required autocomplete="off">
+      <div class="field-hint">250+ Indian cities supported</div>
+    </div>
+
+    <button type="submit" class="btn" id="submitBtn">
+      <span class="btn-text">Generate Kundali</span>
+      <div class="spinner"></div>
+    </button>
+  </form>
+
+  <div class="note">
+    Uses Lahiri Ayanamsa, Whole Sign houses, Swiss Ephemeris for precise planetary positions.
+    Report includes charts, yogas, doshas, predictions, Lal Kitab remedies, and personalized daily rituals.
+  </div>
+
+  <div class="footer">
+    Parashari Jyotish System
+  </div>
+</div>
+
+<script>
+  document.getElementById('chartForm').addEventListener('submit', function() {
+    document.body.classList.add('generating');
+    document.getElementById('submitBtn').disabled = true;
+  });
+</script>
+
+</body>
+</html>

@@ -4485,10 +4485,21 @@ def get_faq(chart, pred):
 
     faqs = []
 
-    # Helper: find dasha periods for a planet
+    birth_year = chart['birth']['year']
+    max_year = birth_year + 80  # realistic lifetime cap
+
+    # Helper: find dasha periods for a planet (within lifetime)
     def _dasha_period(planet_name):
         for d in dashas['dashas']:
-            if d['lord'] == planet_name:
+            if d['lord'] == planet_name and d['start'].year <= max_year:
+                return f"{d['start'].strftime('%b %Y')} to {d['end'].strftime('%b %Y')}"
+        return ''
+
+    # Helper: find FUTURE or CURRENT dasha for a planet
+    def _future_dasha(planet_name):
+        now = datetime.now(dashas['dashas'][0]['start'].tzinfo)
+        for d in dashas['dashas']:
+            if d['lord'] == planet_name and d['end'] > now and d['start'].year <= max_year:
                 return f"{d['start'].strftime('%b %Y')} to {d['end'].strftime('%b %Y')}"
         return ''
 
@@ -4529,10 +4540,44 @@ def get_faq(chart, pred):
     moon = planets['Moon']
 
     # ── 1. Marriage ──
-    marriage_periods = []
+    now = datetime.now(dashas['dashas'][0]['start'].tzinfo) if dashas['dashas'] else None
+    current_age = (now.year - birth_year) if now else 30
+
+    # Find ALL marriage-relevant dasha periods within lifetime
+    marriage_past = []
+    marriage_future = []
     for d in dashas['dashas']:
-        if d['lord'] in (l7, 'Venus'):
-            marriage_periods.append(f"{d['start'].strftime('%Y')}-{d['end'].strftime('%Y')} ({d['lord']} period)")
+        if d['lord'] in (l7, 'Venus') and d['start'].year <= max_year:
+            age_at_start = d['start'].year - birth_year
+            label = f"{d['start'].strftime('%Y')}-{d['end'].strftime('%Y')} (age {age_at_start}-{d['end'].year - birth_year})"
+            if now and d['end'] <= now:
+                marriage_past.append(label)
+            elif now and d['start'] <= now:
+                marriage_future.append(label + ' — currently active')
+            elif now:
+                marriage_future.append(label)
+
+    # Build marriage timing text — filter out unrealistic ages
+    marriage_future_realistic = [p for p in marriage_future if not any(f'age {a}' in p for a in range(60, 100))]
+
+    if marriage_future_realistic:
+        marriage_timing = f'Your most favorable period for marriage is {marriage_future_realistic[0]}.'
+    elif marriage_past:
+        marriage_timing = (
+            f'Your prime marriage window was {marriage_past[-1]}. If you are already married, '
+            f'your partner likely came into your life during that time. '
+            f'Your current {maha_lord or "dasha"} period can still bring new relationships or deepen existing ones through favorable sub-periods.'
+        )
+    elif marriage_future:
+        # Only unrealistically far periods remain — don't show them
+        marriage_timing = (
+            f'Your main marriage-related planetary periods have already passed. '
+            f'If you are already married, those periods brought your partner. '
+            f'For new relationships, your current {maha_lord or "dasha"} period can bring opportunities through favorable sub-periods and transits.'
+        )
+    else:
+        marriage_timing = f'Your current {maha_lord or "dasha"} period can bring partnership opportunities through favorable sub-periods.'
+
     venus_quality = 'Your Venus is strong, which means love and romance flow naturally in your life.' if venus['dignity'] in ('Exalted', 'Own Sign', 'Friendly') else 'Your Venus needs some support — you may need to put extra effort into expressing love and keeping romance alive.'
     spouse_sign = houses[7]['sign']
     spouse_hints = {
@@ -4546,24 +4591,35 @@ def get_faq(chart, pred):
     faqs.append({
         'question': 'When will I get married? What will my spouse be like?',
         'answer': (
-            f'Based on your chart, the most favorable periods for marriage are: {", ".join(marriage_periods[:2]) if marriage_periods else "during Venus or Jupiter transits"}. '
+            f'{marriage_timing} '
             f'{venus_quality} '
             f'Your spouse is likely to be {spouse_hints.get(spouse_sign, "a good match")}. '
-            f'{"If you are already married, these same periods bring renewal and deeper bonding in the relationship." if mars_house not in (1,2,4,7,8,12) else "Since you have Manglik Dosha, matching charts with your partner is recommended for best compatibility."}'
+            f'{"If you are already married, these periods bring renewal and deeper bonding. " if current_age > 30 else ""}'
+            f'{"Since you have Manglik Dosha, matching charts with your partner is recommended for best compatibility." if mars_house in (1,2,4,7,8,12) else ""}'
         ),
     })
 
     # ── 2. Career ──
     career_fields = career_map.get(houses[10]['sign'], 'various fields')
     l10_strong = planets[l10]['dignity'] in ('Exalted', 'Own Sign', 'Friendly', 'Moolatrikona')
-    career_period = _dasha_period(l10)
+    career_period = _future_dasha(l10) or _dasha_period(l10)
+    # Convert period to age range for readability
+    career_age_text = ''
+    if career_period:
+        try:
+            start_yr = int(career_period.split(' ')[0].split(' ')[-1].split('-')[0])
+            end_parts = career_period.split(' to ')
+            end_yr = int(end_parts[1].split(' ')[0].split('-')[0]) if len(end_parts) > 1 else start_yr + 10
+            career_age_text = f' (roughly age {start_yr - birth_year} to {end_yr - birth_year})'
+        except (ValueError, IndexError):
+            pass
     faqs.append({
         'question': 'What career is best for me? Will I be successful?',
         'answer': (
             f'Your chart points toward success in {career_fields}. '
-            f'{"You have natural talent and support for career growth — promotions and recognition come with moderate effort." if l10_strong else "Your career path may have some bumps early on, but persistence pays off. You may switch jobs or fields before finding your groove."} '
-            f'{"Your best career growth period is " + career_period + "." if career_period else ""} '
-            f'{"Right now, during your " + maha_lord + " period, " + ("career matters are active and progressing." if planets[maha_lord]["house"] in (1,2,10,11) else "focus on building skills — the big career push comes in a later period.") if maha_lord else ""}'
+            f'{"You have natural talent and support for career growth — promotions and recognition come with moderate effort. " if l10_strong else "Your career path may have some bumps early on, but persistence pays off. You may switch jobs or fields before finding your groove. "}'
+            f'{"Your best career growth period is " + career_period + career_age_text + ". " if career_period else ""}'
+            f'{"Right now, during your " + maha_lord + " period, " + ("career matters are active and progressing. " if planets[maha_lord]["house"] in (1,2,10,11) else "focus on building skills — the big career push comes later. ") if maha_lord else ""}'
         ),
     })
 
@@ -4659,15 +4715,17 @@ def get_faq(chart, pred):
     # ── 8. Children ──
     jup_strong = jupiter['dignity'] in ('Exalted', 'Own Sign', 'Friendly')
     l5_strong = planets[l5]['dignity'] in ('Exalted', 'Own Sign', 'Friendly')
-    child_period = _dasha_period(l5)
+    child_period = _future_dasha(l5)
+    jup_period = _future_dasha('Jupiter')
     faqs.append({
         'question': 'Will I have children? When is the best time?',
         'answer': (
-            f'{"Your chart is favorable for children. They will bring joy and pride to your life." if jup_strong or l5_strong else "Children are indicated in your chart, though there may be some delays or you may need patience."} '
-            f'{"The best time for planning children is during " + child_period + " or during Jupiter\'s favorable transit." if child_period else "Jupiter periods are generally the best time for childbirth."} '
-            f'{"Your firstborn may be more intellectually inclined." if houses[5]["sign"] in ("Gemini", "Virgo", "Aquarius") else ""}'
-            f'{"Your children are likely to be active, energetic, and possibly involved in sports." if houses[5]["sign"] in ("Aries", "Leo", "Sagittarius") else ""}'
-            f'{"Your children will likely be artistic, gentle, and emotionally connected to you." if houses[5]["sign"] in ("Cancer", "Pisces", "Taurus", "Libra") else ""}'
+            f'{"Your chart is favorable for children. They will bring joy and pride to your life. " if jup_strong or l5_strong else "Children are indicated in your chart, though there may be some delays or you may need patience. "}'
+            f'{"The best time for planning children is during " + child_period + ". " if child_period else ""}'
+            f'{"Another favorable window is during " + jup_period + ". " if jup_period and jup_period != child_period else ""}'
+            f'{"Your firstborn may be more intellectually inclined. " if houses[5]["sign"] in ("Gemini", "Virgo", "Aquarius") else ""}'
+            f'{"Your children are likely to be active, energetic, and possibly involved in sports. " if houses[5]["sign"] in ("Aries", "Leo", "Sagittarius") else ""}'
+            f'{"Your children will likely be artistic, gentle, and emotionally connected to you. " if houses[5]["sign"] in ("Cancer", "Pisces", "Taurus", "Libra") else ""}'
         ),
     })
 
@@ -4714,7 +4772,7 @@ def get_faq(chart, pred):
     faqs.append({
         'question': 'What are my lucky colors and days?',
         'answer': (
-            f'Your lucky colors are: {lp.get("lucky_colors", "see Lucky Points above")}. Wearing these colors, especially on important days, gives you a subtle confidence boost. '
+            f'Your lucky colors are: {lp.get("lucky_color", "not determined")}. Wearing these colors, especially on important days, gives you a subtle confidence boost. '
             f'Your lucky days are: {", ".join(lp.get("lucky_days", []))}. Try to schedule important meetings, interviews, or decisions on these days. '
             f'Your lucky number is {lp.get("lucky_number", "see above")}. Lucky metal: {lp.get("lucky_metal", "see above")}. '
             f'These are based on your ascendant and Moon sign — they work as gentle energy alignments, not guarantees.'
@@ -4727,9 +4785,7 @@ def get_faq(chart, pred):
     faqs.append({
         'question': 'Should I do a job or start a business?',
         'answer': (
-            f'{"Your chart strongly favors entrepreneurship and leadership. You have the drive, courage, and independence to run your own venture." if sun["house"] in (1, 10) or mars_house in (3, 10) or planets[l10]["dignity"] in ("Exalted", "Own Sign") else ""}'
-            f'{"Your chart favors a stable career in an organization. You do well with structure, steady growth, and team environments." if saturn["house"] in (10, 7, 1) and sun["house"] not in (1, 10) else ""}'
-            f'{"You can do well in both — consider starting a side business while maintaining a job, especially during your favorable dasha periods." if sun["house"] not in (1, 10) and saturn["house"] not in (10, 7, 1) else ""} '
+            f'{"Your chart strongly favors entrepreneurship and leadership. You have the drive, courage, and independence to run your own venture. " if sun["house"] in (1, 10) or mars_house in (3, 10) or planets[l10]["dignity"] in ("Exalted", "Own Sign") else ("Your chart favors a stable career in an organization. You do well with structure, steady growth, and team environments. " if saturn["house"] in (10, 7, 1) else "You can do well in both — consider starting a side business while maintaining a job, especially during favorable periods. ")}'
             f'If considering business, the best time to start is during {maha_lord} period (your current phase) '
             f'{"which is favorable for new ventures." if maha_lord and planets[maha_lord]["dignity"] in ("Exalted", "Own Sign", "Friendly") else "— but wait for a stronger sub-period within it before taking the leap." if maha_lord else "."}'
         ),
@@ -4755,7 +4811,7 @@ def get_faq(chart, pred):
             f'Recite "{daily.get("primary_mantra", "Om Namah Shivaya")}" 11 times every morning facing {daily.get("meditation_direction", "East")}. '
             f'This aligns with your ascendant energy and protects your overall chart. '
             f'On {daily.get("best_day", "your lucky day")}, do a special puja or visit a temple. '
-            f'Wear {lp.get("lucky_colors", "your lucky color").split(",")[0].strip().lower()} colored clothes when you want an extra boost of confidence. '
+            f'Wear {lp.get("lucky_color", "your lucky color").split(",")[0].strip().lower()} colored clothes when you want an extra boost of confidence. '
             f'These small daily practices have more cumulative power than expensive one-time rituals.'
         ),
     })

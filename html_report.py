@@ -849,7 +849,15 @@ function toggleToc() {{
         a.style.cssText = 'font-size:0.82rem; color:var(--text); text-decoration:none; padding:6px 8px; border-radius:6px; display:block;';
         a.onmouseover = function() {{ this.style.background = 'var(--accent-soft)'; }};
         a.onmouseout = function() {{ this.style.background = 'none'; }};
-        a.onclick = function() {{ popup.style.display = 'none'; }};
+        a.onclick = function() {{
+          popup.style.display = 'none';
+          // Open collapsed details sections when navigating to them
+          var target = document.querySelector(this.getAttribute('href'));
+          if (target && target.tagName === 'DETAILS' && !target.open) target.open = true;
+          // Also check parent details
+          var parent = target ? target.closest('details') : null;
+          if (parent && !parent.open) parent.open = true;
+        }};
         links.appendChild(a);
       }}
     }});

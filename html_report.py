@@ -194,6 +194,13 @@ def generate_html_report(chart, yogas_list, output_path=None):
   .chart-box img {{ max-width: 100%; height: auto; }}
   /* Life cards responsive */
   .life-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }}
+  /* Accordion sections */
+  details.section {{ border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }}
+  details.section > summary {{ outline: none; }}
+  details.section > summary::-webkit-details-marker {{ display: none; }}
+  details.section > summary::after {{ content: ' +'; color: var(--accent); font-weight: 700; }}
+  details.section[open] > summary::after {{ content: ' −'; }}
+  details.section > summary .section-title {{ display: inline; }}
 
   body {{
     font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -659,8 +666,8 @@ def generate_html_report(chart, yogas_list, output_path=None):
 
 <div class="container">
 
-<!-- ═══════════ CHARTS ═══════════ -->
-<div class="section">
+<!-- ═══════════ CHARTS (open) ═══════════ -->
+<div class="section" id="sec-charts">
   <div class="section-title">Birth Charts</div>
   <div class="chart-grid">
     <div class="chart-box">
@@ -674,10 +681,13 @@ def generate_html_report(chart, yogas_list, output_path=None):
   </div>
 </div>
 
-<!-- ═══════════ PLANETARY POSITIONS ═══════════ -->
-<div class="section">
-  <div class="section-title">Planetary Positions</div>
-  <div class="card"><div class="table-scroll">
+<!-- ═══════════ CURRENT PERIOD (open) ═══════════ -->
+{_current_period_section(chart, current_maha, current_antar)}
+
+<!-- ═══════════ COLLAPSIBLE TECHNICAL SECTIONS ═══════════ -->
+<details class="section" id="sec-positions">
+  <summary class="section-title" style="cursor:pointer; list-style:none;">Planetary Positions <span style="font-size:0.7rem; color:var(--text-dim); font-weight:400;">tap to expand</span></summary>
+  <div class="card" style="margin-top:12px;"><div class="table-scroll">
     <table class="data-table">
       <thead>
         <tr>
@@ -706,35 +716,32 @@ def generate_html_report(chart, yogas_list, output_path=None):
       </tbody>
     </table>
   </div></div>
-</div>
+</details>
 
-<!-- ═══════════ PLANETARY STRENGTH ═══════════ -->
-<div class="section">
-  <div class="section-title">Planetary Strength</div>
-  <div class="card">
+<details class="section" id="sec-strength">
+  <summary class="section-title" style="cursor:pointer; list-style:none;">Planetary Strength <span style="font-size:0.7rem; color:var(--text-dim); font-weight:400;">tap to expand</span></summary>
+  <div class="card" style="margin-top:12px;">
 {_strength_bars(chart)}
   </div>
-</div>
+</details>
 
-<!-- ═══════════ HOUSE ANALYSIS ═══════════ -->
-<div class="section">
-  <div class="section-title">House Analysis</div>
-  <div class="house-grid">
-{_house_cards(chart)}
-  </div>
-</div>
-
-<!-- ═══════════ YOGAS ═══════════ -->
-<div class="section">
-  <div class="section-title">Yoga Analysis — {len(yogas_list)} yoga{"s" if len(yogas_list) != 1 else ""} identified</div>
-  <div class="yoga-grid">
+<details class="section" id="sec-yogas" open>
+  <summary class="section-title" style="cursor:pointer; list-style:none;">Yoga Analysis — {len(yogas_list)} yoga{"s" if len(yogas_list) != 1 else ""} identified</summary>
+  <div class="yoga-grid" style="margin-top:12px;">
 {_yoga_cards(yogas_list)}
   </div>
-</div>
+</details>
 
-<!-- ═══════════ DIVISIONAL CHARTS ═══════════ -->
-<div class="section">
-  <div class="section-title">Divisional Charts</div>
+<details class="section" id="sec-houses">
+  <summary class="section-title" style="cursor:pointer; list-style:none;">House Analysis <span style="font-size:0.7rem; color:var(--text-dim); font-weight:400;">tap to expand</span></summary>
+  <div class="house-grid" style="margin-top:12px;">
+{_house_cards(chart)}
+  </div>
+</details>
+
+<details class="section" id="sec-divisional">
+  <summary class="section-title" style="cursor:pointer; list-style:none;">Divisional Charts (D10, D7) <span style="font-size:0.7rem; color:var(--text-dim); font-weight:400;">tap to expand</span></summary>
+  <div style="margin-top:12px;">
   <div class="chart-grid">
     <div class="chart-box">
       <img src="data:image/png;base64,{d10_img}" alt="Dasamsha Chart">
@@ -747,12 +754,12 @@ def generate_html_report(chart, yogas_list, output_path=None):
   </div>
 {_vargottama_note(vargottama)}
 {_divisional_tables(chart)}
-</div>
+  </div>
+</details>
 
-<!-- ═══════════ DASHA TIMELINE ═══════════ -->
-<div class="section">
-  <div class="section-title">Vimshottari Dasha Timeline</div>
-  <div class="card">
+<details class="section" id="sec-dasha">
+  <summary class="section-title" style="cursor:pointer; list-style:none;">Vimshottari Dasha Timeline <span style="font-size:0.7rem; color:var(--text-dim); font-weight:400;">tap to expand</span></summary>
+  <div class="card" style="margin-top:12px;">
     <div style="margin-bottom:12px; font-size:0.85rem; color:var(--text-dim);">
       Moon Nakshatra: <strong style="color:var(--text-bright)">{dashas['moon_nakshatra']}</strong> &middot;
       Lord: <strong style="color:var(--text-bright)">{dashas['moon_nak_lord']}</strong> &middot;
@@ -761,24 +768,28 @@ def generate_html_report(chart, yogas_list, output_path=None):
 {_dasha_bar(dashas)}
 {_dasha_details(dashas)}
   </div>
-</div>
+</details>
 
-<!-- ═══════════ CURRENT PERIOD ═══════════ -->
-{_current_period_section(chart, current_maha, current_antar)}
-
-<!-- ═══════════ LIFE AREAS ═══════════ -->
-<div class="section">
-  <div class="section-title">Life Areas Reading</div>
-  <div class="life-grid">
+<details class="section" id="sec-life-areas">
+  <summary class="section-title" style="cursor:pointer; list-style:none;">Life Areas Overview <span style="font-size:0.7rem; color:var(--text-dim); font-weight:400;">tap to expand</span></summary>
+  <div class="life-grid" style="margin-top:12px;">
 {_life_area_cards(chart)}
   </div>
-</div>
+</details>
 
-<!-- ═══════════ DETAILED INTERPRETATION ═══════════ -->
+<details class="section" id="sec-interpretation">
+  <summary class="section-title" style="cursor:pointer; list-style:none;">Detailed Interpretation <span style="font-size:0.7rem; color:var(--text-dim); font-weight:400;">tap to expand</span></summary>
+  <div style="margin-top:12px;">
 {_detailed_interpretation(chart, yogas_list)}
+  </div>
+</details>
 
-<!-- ═══════════ PREDICTIVE TIMELINE ═══════════ -->
+<details class="section" id="sec-predictive">
+  <summary class="section-title" style="cursor:pointer; list-style:none;">Predictive Timeline <span style="font-size:0.7rem; color:var(--text-dim); font-weight:400;">tap to expand</span></summary>
+  <div style="margin-top:12px;">
 {_predictive_section(chart, current_maha, current_antar)}
+  </div>
+</details>
 
 </div>
 

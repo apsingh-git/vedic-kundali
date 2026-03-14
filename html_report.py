@@ -205,7 +205,7 @@ def generate_html_report(chart, yogas_list, output_path=None):
 
   /* ── Header ─────────────────────────────── */
   .header {{
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    background: linear-gradient(135deg, var(--card) 0%, var(--card-alt) 50%, var(--bg) 100%);
     padding: 48px 24px 40px;
     text-align: center;
     border-bottom: 1px solid var(--border);

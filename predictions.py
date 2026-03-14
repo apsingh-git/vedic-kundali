@@ -4476,9 +4476,139 @@ def get_nakshatra_phal(chart):
 # MASTER FUNCTION
 # ════════════════════════════════════════════════════════════════
 
+def get_faq(chart, pred):
+    """Generate chart-specific FAQ answers."""
+    planets = chart['planets']
+    houses = chart['houses']
+    dashas = chart['dashas']
+    asc = chart['ascendant']
+
+    faqs = []
+
+    # Marriage timing
+    l7 = houses[7]['lord']
+    venus = planets['Venus']
+    marriage_dashas = []
+    for d in dashas['dashas']:
+        if d['lord'] == l7 or d['lord'] == 'Venus':
+            marriage_dashas.append(f"{d['lord']} Mahadasha ({d['start'].strftime('%Y')}-{d['end'].strftime('%Y')})")
+    faqs.append({
+        'question': 'When is the best time for marriage?',
+        'answer': (
+            f'Your 7th house lord is {l7} and Venus (marriage significator) is in {venus["sign"]} (H{venus["house"]}). '
+            f'Marriage is most likely during the dasha of the 7th lord or Venus. '
+            f'Key periods: {", ".join(marriage_dashas[:2]) if marriage_dashas else "consult dasha timeline above"}. '
+            f'{"Jupiter\'s aspect on the 7th house or its lord during transit also triggers marriage." if any(d["lord"] == "Jupiter" for d in dashas["dashas"] if d.get("is_current")) else ""}'
+        ),
+    })
+
+    # Career change
+    l10 = houses[10]['lord']
+    faqs.append({
+        'question': 'Will I be successful in my career?',
+        'answer': (
+            f'Your 10th house is {houses[10]["sign"]} with lord {l10} in {planets[l10]["sign"]} (H{planets[l10]["house"]}, {planets[l10]["dignity"]}). '
+            f'{"Strong 10th lord means career success comes naturally. " if planets[l10]["dignity"] in ("Exalted", "Own Sign") else ""}'
+            f'{"The 10th lord is weak — career requires persistent effort and may involve changes before settling. " if planets[l10]["dignity"] in ("Debilitated", "Enemy") else ""}'
+            f'Best career periods are during the dasha of the 10th lord ({l10}) or planets placed in the 10th house. '
+            f'See the Life Predictions > Career section above for detailed analysis.'
+        ),
+    })
+
+    # Money/wealth
+    l2 = houses[2]['lord']
+    l11 = houses[11]['lord']
+    faqs.append({
+        'question': 'How will my financial situation be?',
+        'answer': (
+            f'Wealth depends on your 2nd house ({houses[2]["sign"]}, lord {l2}) and 11th house ({houses[11]["sign"]}, lord {l11}). '
+            f'{l2} is {planets[l2]["dignity"]} — {"strong foundation for savings" if planets[l2]["dignity"] in ("Exalted", "Own Sign", "Friendly") else "saving money needs discipline"}. '
+            f'{l11} is {planets[l11]["dignity"]} — {"income growth is supported" if planets[l11]["dignity"] in ("Exalted", "Own Sign", "Friendly") else "income may fluctuate, multiple sources help"}. '
+            f'Jupiter in H{planets["Jupiter"]["house"]} {"protects wealth" if planets["Jupiter"]["house"] in (2, 5, 9, 11) else "does not directly influence wealth houses"}.'
+        ),
+    })
+
+    # Sade Sati
+    ss = pred.get('sade_sati', {})
+    current_ss = ss.get('current_status', '')
+    faqs.append({
+        'question': 'Am I going through Sade Sati?',
+        'answer': current_ss if current_ss else 'Check the Sade Sati section above for your complete Saturn transit timeline.',
+    })
+
+    # Gemstone
+    remedies = pred.get('remedies', [])
+    if remedies:
+        stones = [f'{r["gemstone"]} for {r["planet"]}' for r in remedies if r.get('gemstone')]
+        faqs.append({
+            'question': 'Which gemstone should I wear?',
+            'answer': (
+                f'Based on weak planets in your chart, recommended stones: {"; ".join(stones[:3])}. '
+                f'Always do a trial period of 3 days before committing to a gemstone. '
+                f'Wear on the correct finger and day as specified in the Remedies section.'
+            ),
+        })
+    else:
+        lp = pred.get('lucky_points', {})
+        faqs.append({
+            'question': 'Which gemstone should I wear?',
+            'answer': f'Your lucky stone is {lp.get("lucky_stone", "consult the Lucky Points section")}. No planets are critically weak, so this is optional.',
+        })
+
+    # Health
+    h6_sign = houses[6]['sign']
+    asc_sign = asc['sign']
+    faqs.append({
+        'question': 'What health issues should I watch for?',
+        'answer': (
+            f'With {asc_sign} ascendant, watch: {_SIGN_BODY_PARTS.get(asc_sign, "general health")}. '
+            f'6th house in {h6_sign} indicates disease tendencies in {_SIGN_BODY_PARTS.get(h6_sign, "general areas")}. '
+            f'Weak planets (if any) add specific vulnerabilities — check the Health section in Life Predictions.'
+        ),
+    })
+
+    # Children
+    l5 = houses[5]['lord']
+    jupiter = planets['Jupiter']
+    faqs.append({
+        'question': 'What does my chart say about children?',
+        'answer': (
+            f'5th house ({houses[5]["sign"]}, lord {l5} in H{planets[l5]["house"]}) governs children. '
+            f'Jupiter (putra karaka) is in {jupiter["sign"]} (H{jupiter["house"]}, {jupiter["dignity"]}). '
+            f'{"Jupiter strong — children bring happiness and pride. " if jupiter["dignity"] in ("Exalted", "Own Sign") else ""}'
+            f'{"Jupiter is weak — children may come after delays or require extra care. " if jupiter["dignity"] in ("Debilitated", "Enemy") else ""}'
+            f'Children-related events activate during {l5} or Jupiter dasha.'
+        ),
+    })
+
+    # Manglik
+    mars_house = planets['Mars']['house']
+    faqs.append({
+        'question': 'Am I Manglik?',
+        'answer': (
+            f'Mars is in your {mars_house}{"st" if mars_house == 1 else "nd" if mars_house == 2 else "th"} house. '
+            f'{"Yes, Manglik Dosha applies (Mars in 1/2/4/7/8/12). Check the Doshas section for details and cancellation rules." if mars_house in (1,2,4,7,8,12) else "No, you are not Manglik. Mars is not in the 1st, 2nd, 4th, 7th, 8th, or 12th house."}'
+        ),
+    })
+
+    # Spirituality
+    ketu = planets['Ketu']
+    faqs.append({
+        'question': 'What is my spiritual path?',
+        'answer': (
+            f'Ketu in {ketu["sign"]} (H{ketu["house"]}) shows your spiritual direction. '
+            f'Your past-life mastery lies in {ketu["sign"]} themes, and this life pushes you toward '
+            f'{planets["Rahu"]["sign"]} qualities (Rahu in H{planets["Rahu"]["house"]}). '
+            f'See Karmic Lessons section for your full spiritual blueprint.'
+        ),
+    })
+
+    return faqs
+
+
 def generate_all_predictions(chart):
     """Master function: generate all prediction sections."""
-    return {
+    pred = {
         'doshas': detect_doshas(chart),
         'planetary_analysis': analyze_planets(chart),
         'lal_kitab': get_lal_kitab_predictions(chart),
@@ -4493,3 +4623,5 @@ def generate_all_predictions(chart):
         'avkahada_chakra': get_avkahada_chakra(chart),
         'nakshatra_phal': get_nakshatra_phal(chart),
     }
+    pred['faq'] = get_faq(chart, pred)
+    return pred

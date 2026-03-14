@@ -684,110 +684,64 @@ def generate_html_report(chart, yogas_list, output_path=None):
 <!-- ═══════════ CURRENT PERIOD (open) ═══════════ -->
 {_current_period_section(chart, current_maha, current_antar)}
 
-<!-- ═══════════ COLLAPSIBLE TECHNICAL SECTIONS ═══════════ -->
-<details class="section" id="sec-positions">
-  <summary class="section-title" style="cursor:pointer; list-style:none;">Planetary Positions <span style="font-size:0.7rem; color:var(--text-dim); font-weight:400;">tap to expand</span></summary>
-  <div class="card" style="margin-top:12px;"><div class="table-scroll">
-    <table class="data-table">
-      <thead>
-        <tr>
-          <th>Planet</th>
-          <th>Sign</th>
-          <th>Degree</th>
-          <th>Nakshatra</th>
-          <th>Pada</th>
-          <th>House</th>
-          <th>Dignity</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style="color: var(--accent); font-weight:600;">Lagna</td>
-          <td>{asc['sign']}</td>
-          <td>{asc['degree']:.1f}°</td>
-          <td>{asc['nakshatra']}</td>
-          <td>{asc['pada']}</td>
-          <td>1</td>
-          <td>—</td>
-          <td>—</td>
-        </tr>
-{_planet_rows(chart)}
-      </tbody>
-    </table>
-  </div></div>
-</details>
-
-<details class="section" id="sec-strength">
-  <summary class="section-title" style="cursor:pointer; list-style:none;">Planetary Strength <span style="font-size:0.7rem; color:var(--text-dim); font-weight:400;">tap to expand</span></summary>
-  <div class="card" style="margin-top:12px;">
-{_strength_bars(chart)}
-  </div>
-</details>
-
-<details class="section" id="sec-yogas" open>
-  <summary class="section-title" style="cursor:pointer; list-style:none;">Yoga Analysis — {len(yogas_list)} yoga{"s" if len(yogas_list) != 1 else ""} identified</summary>
-  <div class="yoga-grid" style="margin-top:12px;">
+<!-- ═══════════ YOGAS (open) ═══════════ -->
+<div class="section" id="sec-yogas">
+  <div class="section-title">Yoga Analysis — {len(yogas_list)} yoga{"s" if len(yogas_list) != 1 else ""} identified</div>
+  <div class="yoga-grid">
 {_yoga_cards(yogas_list)}
   </div>
-</details>
+</div>
 
-<details class="section" id="sec-houses">
-  <summary class="section-title" style="cursor:pointer; list-style:none;">House Analysis <span style="font-size:0.7rem; color:var(--text-dim); font-weight:400;">tap to expand</span></summary>
-  <div class="house-grid" style="margin-top:12px;">
-{_house_cards(chart)}
-  </div>
-</details>
+<!-- ═══════════ ALL TECHNICAL DETAILS IN ONE ACCORDION ═══════════ -->
+<details class="section" id="sec-detailed-charts">
+  <summary class="section-title" style="cursor:pointer; list-style:none;">Detailed Charts &amp; Tables <span style="font-size:0.7rem; color:var(--text-dim); font-weight:400;">tap to expand</span></summary>
+  <div style="margin-top:16px;">
 
-<details class="section" id="sec-divisional">
-  <summary class="section-title" style="cursor:pointer; list-style:none;">Divisional Charts (D10, D7) <span style="font-size:0.7rem; color:var(--text-dim); font-weight:400;">tap to expand</span></summary>
-  <div style="margin-top:12px;">
-  <div class="chart-grid">
-    <div class="chart-box">
-      <img src="data:image/png;base64,{d10_img}" alt="Dasamsha Chart">
-      <div class="chart-label">Dasamsha (D10) — Career</div>
+    <h3 style="color:var(--accent); font-size:0.85rem; margin-bottom:10px;">Planetary Positions</h3>
+    <div class="card" style="margin-bottom:16px;"><div class="table-scroll">
+      <table class="data-table">
+        <thead><tr><th>Planet</th><th>Sign</th><th>Degree</th><th>Nakshatra</th><th>Pada</th><th>House</th><th>Dignity</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td style="color:var(--accent); font-weight:600;">Lagna</td><td>{asc['sign']}</td><td>{asc['degree']:.1f}°</td><td>{asc['nakshatra']}</td><td>{asc['pada']}</td><td>1</td><td>—</td><td>—</td></tr>
+{_planet_rows(chart)}
+        </tbody>
+      </table>
+    </div></div>
+
+    <h3 style="color:var(--accent); font-size:0.85rem; margin-bottom:10px;">Planetary Strength</h3>
+    <div class="card" style="margin-bottom:16px;">{_strength_bars(chart)}</div>
+
+    <h3 style="color:var(--accent); font-size:0.85rem; margin-bottom:10px;">House Analysis</h3>
+    <div class="house-grid" style="margin-bottom:16px;">{_house_cards(chart)}</div>
+
+    <h3 style="color:var(--accent); font-size:0.85rem; margin-bottom:10px;">Divisional Charts (D10, D7)</h3>
+    <div class="chart-grid" style="margin-bottom:8px;">
+      <div class="chart-box"><img src="data:image/png;base64,{d10_img}" alt="Dasamsha Chart"><div class="chart-label">Dasamsha (D10) — Career</div></div>
+      <div class="chart-box"><img src="data:image/png;base64,{d7_img}" alt="Saptamsha Chart"><div class="chart-label">Saptamsha (D7) — Children</div></div>
     </div>
-    <div class="chart-box">
-      <img src="data:image/png;base64,{d7_img}" alt="Saptamsha Chart">
-      <div class="chart-label">Saptamsha (D7) — Children</div>
-    </div>
-  </div>
 {_vargottama_note(vargottama)}
 {_divisional_tables(chart)}
-  </div>
-</details>
 
-<details class="section" id="sec-dasha">
-  <summary class="section-title" style="cursor:pointer; list-style:none;">Vimshottari Dasha Timeline <span style="font-size:0.7rem; color:var(--text-dim); font-weight:400;">tap to expand</span></summary>
-  <div class="card" style="margin-top:12px;">
-    <div style="margin-bottom:12px; font-size:0.85rem; color:var(--text-dim);">
-      Moon Nakshatra: <strong style="color:var(--text-bright)">{dashas['moon_nakshatra']}</strong> &middot;
-      Lord: <strong style="color:var(--text-bright)">{dashas['moon_nak_lord']}</strong> &middot;
-      Balance at birth: <strong style="color:var(--text-bright)">{dashas['balance_at_birth']*100:.1f}%</strong>
-    </div>
+    <h3 style="color:var(--accent); font-size:0.85rem; margin: 16px 0 10px;">Vimshottari Dasha Timeline</h3>
+    <div class="card" style="margin-bottom:16px;">
+      <div style="margin-bottom:12px; font-size:0.85rem; color:var(--text-dim);">
+        Moon Nakshatra: <strong style="color:var(--text-bright)">{dashas['moon_nakshatra']}</strong> &middot;
+        Lord: <strong style="color:var(--text-bright)">{dashas['moon_nak_lord']}</strong> &middot;
+        Balance at birth: <strong style="color:var(--text-bright)">{dashas['balance_at_birth']*100:.1f}%</strong>
+      </div>
 {_dasha_bar(dashas)}
 {_dasha_details(dashas)}
-  </div>
-</details>
+    </div>
 
-<details class="section" id="sec-life-areas">
-  <summary class="section-title" style="cursor:pointer; list-style:none;">Life Areas Overview <span style="font-size:0.7rem; color:var(--text-dim); font-weight:400;">tap to expand</span></summary>
-  <div class="life-grid" style="margin-top:12px;">
-{_life_area_cards(chart)}
-  </div>
-</details>
+    <h3 style="color:var(--accent); font-size:0.85rem; margin-bottom:10px;">Life Areas Overview</h3>
+    <div class="life-grid" style="margin-bottom:16px;">{_life_area_cards(chart)}</div>
 
-<details class="section" id="sec-interpretation">
-  <summary class="section-title" style="cursor:pointer; list-style:none;">Detailed Interpretation <span style="font-size:0.7rem; color:var(--text-dim); font-weight:400;">tap to expand</span></summary>
-  <div style="margin-top:12px;">
+    <h3 style="color:var(--accent); font-size:0.85rem; margin-bottom:10px;">Detailed Interpretation</h3>
 {_detailed_interpretation(chart, yogas_list)}
-  </div>
-</details>
 
-<details class="section" id="sec-predictive">
-  <summary class="section-title" style="cursor:pointer; list-style:none;">Predictive Timeline <span style="font-size:0.7rem; color:var(--text-dim); font-weight:400;">tap to expand</span></summary>
-  <div style="margin-top:12px;">
+    <h3 style="color:var(--accent); font-size:0.85rem; margin: 16px 0 10px;">Predictive Timeline</h3>
 {_predictive_section(chart, current_maha, current_antar)}
+
   </div>
 </details>
 
@@ -1839,6 +1793,7 @@ def _render_toc():
         ('house-strength', 'House Strength'),
         ('avkahada', 'Avkahada'),
         ('karmic-lessons', 'Karmic Lessons'),
+        ('faq', 'FAQ'),
     ]
     items = ' '.join(f'<a href="#{id_}">{label}</a>' for id_, label in links)
     return f'''<div class="nav-toc">
@@ -2329,4 +2284,22 @@ def _render_all_predictions(pred):
     html += _render_house_strengthening(pred['house_strengthening'])
     html += _render_avkahada(pred.get('avkahada_chakra'))
     html += _render_karmic_lessons(pred['karmic_lessons'])
+    # 7. FAQ at the end
+    html += _render_faq(pred.get('faq'))
     return html
+
+
+def _render_faq(faqs):
+    if not faqs:
+        return ''
+    items = ''
+    for faq in faqs:
+        items += f'''<details style="border-bottom:1px solid var(--border); padding:12px 0;">
+  <summary style="cursor:pointer; font-size:0.92rem; font-weight:600; color:var(--text-bright); list-style:none; display:flex; justify-content:space-between; align-items:center;">{faq["question"]} <span style="color:var(--accent); font-size:0.8rem;">+</span></summary>
+  <div style="font-size:0.88rem; line-height:1.7; color:var(--text); margin-top:10px; padding-left:4px;">{faq["answer"]}</div>
+</details>'''
+
+    return f'''<div class="pred-section" id="faq">
+  <div class="section-title">Common Questions About Your Chart</div>
+  <div class="card">{items}</div>
+</div>'''

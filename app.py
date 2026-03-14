@@ -11,7 +11,7 @@ from collections import defaultdict
 from flask import Flask, render_template, request, abort, make_response
 
 from geopy.geocoders import Nominatim
-from geopy.exc import GeocoderTimedOut, GeocoderServiceError
+from geopy.exc import GeocoderTimedOut, GeocoderServiceError, GeocoderUnavailable
 
 from calculator import calculate_chart
 from yogas import identify_all_yogas
@@ -134,7 +134,7 @@ def generate():
             location = _geocoder.geocode(query)
             if location:
                 coords = (location.latitude, location.longitude)
-        except (GeocoderTimedOut, GeocoderServiceError):
+        except (GeocoderTimedOut, GeocoderServiceError, GeocoderUnavailable, Exception):
             pass
 
     if not coords:

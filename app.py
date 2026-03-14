@@ -10,10 +10,15 @@ import html as html_lib
 from collections import defaultdict
 from flask import Flask, render_template, request, abort, make_response
 
+from geopy.geocoders import Nominatim
+from geopy.exc import GeocoderTimedOut, GeocoderServiceError
+
 from calculator import calculate_chart
 from yogas import identify_all_yogas
 from html_report import generate_html_report
 from constants import CITY_DB
+
+_geocoder = Nominatim(user_agent='vedic-kundali', timeout=5)
 
 app = Flask(__name__)
 
@@ -111,16 +116,31 @@ def generate():
         return render_template('index.html', errors=['Invalid time. Use the time picker.'],
                                name=name, date=date_str, time=time_str, city=city_raw)
 
-    # Lookup city (exact match first, then partial)
+    # Lookup city: 1) local DB exact, 2) local DB partial, 3) geocode via OpenStreetMap
     coords = CITY_DB.get(city)
     if not coords:
         matches = [k for k in CITY_DB if city in k or k in city]
         if matches:
             coords = CITY_DB[matches[0]]
-        else:
-            return render_template('index.html',
-                                   errors=[f'City not found. Try a major Indian city name (e.g. Mumbai, Delhi, Pune).'],
-                                   name=name, date=date_str, time=time_str, city=city_raw)
+
+    if not coords:
+        # Fallback: geocode via Nominatim (handles any town, village, or pincode)
+        try:
+            query = city_raw
+            if query.isdigit() and len(query) == 6:
+                query = f'{query}, India'  # Indian pincode
+            elif not any(c.isdigit() for c in query):
+                query = f'{query}, India'  # Add India context for better results
+            location = _geocoder.geocode(query)
+            if location:
+                coords = (location.latitude, location.longitude)
+        except (GeocoderTimedOut, GeocoderServiceError):
+            pass
+
+    if not coords:
+        return render_template('index.html',
+                               errors=['Place not found. Try a city name, town, or 6-digit Indian pincode.'],
+                               name=name, date=date_str, time=time_str, city=city_raw)
 
     lat, lon = coords
 

@@ -235,8 +235,8 @@
 
     <div class="field">
       <label>Place of Birth</label>
-      <input type="text" name="city" placeholder="City name (e.g. Mumbai, Delhi)" value="{{ city or '' }}" required autocomplete="off">
-      <div class="field-hint">250+ Indian cities supported</div>
+      <input type="text" name="city" placeholder="City, town, or 6-digit pincode" value="{{ city or '' }}" required autocomplete="off">
+      <div class="field-hint">Any Indian city, town, village, or pincode</div>
     </div>
 
     <button type="submit" class="btn" id="submitBtn">

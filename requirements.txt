@@ -4,3 +4,4 @@ pyswisseph==2.10.3.2
 matplotlib==3.9.4
 timezonefinder==5.2.0
 pytz==2024.2
+geopy==2.4.1

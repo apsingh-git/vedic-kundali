@@ -162,8 +162,31 @@ def generate_html_report(chart, yogas_list, output_path=None):
     --text-bright: #ffffff;
     --radius: 12px;
   }}
+  /* Light theme */
+  .light {{
+    --bg: #f5f5f0;
+    --card: #ffffff;
+    --card-alt: #f0ede6;
+    --border: #d4d0c8;
+    --accent: #c23152;
+    --accent-soft: rgba(194, 49, 82, 0.1);
+    --green: #2a9d6a;
+    --green-soft: rgba(42, 157, 106, 0.1);
+    --gold: #b8860b;
+    --gold-soft: rgba(184, 134, 11, 0.08);
+    --orange: #d47600;
+    --text: #333333;
+    --text-dim: #777777;
+    --text-bright: #111111;
+  }}
+  .light img {{ filter: brightness(1.1) contrast(0.9); }}
 
   * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+  html {{ scroll-behavior: smooth; scroll-padding-top: 20px; overflow-x: hidden; }}
+  /* Prevent tables from pushing page width */
+  table, .data-table, .pred-grid {{ max-width: 100%; }}
+  .table-scroll {{ overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }}
+  .container {{ overflow-x: hidden; }}
 
   body {{
     font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -647,7 +670,7 @@ def generate_html_report(chart, yogas_list, output_path=None):
 <!-- ═══════════ PLANETARY POSITIONS ═══════════ -->
 <div class="section">
   <div class="section-title">Planetary Positions</div>
-  <div class="card">
+  <div class="card"><div class="table-scroll">
     <table class="data-table">
       <thead>
         <tr>
@@ -675,7 +698,7 @@ def generate_html_report(chart, yogas_list, output_path=None):
 {_planet_rows(chart)}
       </tbody>
     </table>
-  </div>
+  </div></div>
 </div>
 
 <!-- ═══════════ PLANETARY STRENGTH ═══════════ -->
@@ -761,6 +784,69 @@ def generate_html_report(chart, yogas_list, output_path=None):
   Generated on {datetime.now().strftime('%d %B %Y at %H:%M')} &middot;
   Vedic Astrology System &middot; Parashari Jyotish &middot; Lahiri Ayanamsa
 </div>
+
+<!-- Floating Controls -->
+<div id="fab-menu" style="position:fixed; bottom:20px; right:20px; z-index:1000; display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
+  <div id="toc-popup" style="display:none; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px; max-height:60vh; overflow-y:auto; width:200px; box-shadow:0 8px 32px rgba(0,0,0,0.4);">
+    <div id="toc-links" style="display:flex; flex-direction:column; gap:4px;"></div>
+  </div>
+  <div style="display:flex; gap:8px;">
+    <button onclick="toggleTheme()" style="width:44px; height:44px; border-radius:50%; border:1px solid var(--border); background:var(--card); color:var(--text); font-size:1.1rem; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,0.3);" title="Toggle theme" aria-label="Toggle theme">&#9788;</button>
+    <button onclick="toggleToc()" id="toc-btn" style="width:44px; height:44px; border-radius:50%; border:1px solid var(--border); background:var(--accent); color:white; font-size:1rem; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,0.3);" title="Sections" aria-label="Jump to section">&#9776;</button>
+    <button onclick="window.scrollTo({{top:0,behavior:'smooth'}})" style="width:44px; height:44px; border-radius:50%; border:1px solid var(--border); background:var(--card); color:var(--text); font-size:1.1rem; cursor:pointer; box-shadow:0 4px 12px rgba(0,0,0,0.3);" title="Back to top" aria-label="Back to top">&#8679;</button>
+  </div>
+</div>
+
+<script>
+// Smooth scroll for all anchors
+document.querySelectorAll('a[href^="#"]').forEach(a => {{
+  a.addEventListener('click', e => {{
+    e.preventDefault();
+    const el = document.querySelector(a.getAttribute('href'));
+    if (el) el.scrollIntoView({{ behavior: 'smooth', block: 'start' }});
+  }});
+}});
+
+// Theme toggle
+function toggleTheme() {{
+  document.documentElement.classList.toggle('light');
+  localStorage.setItem('theme', document.documentElement.classList.contains('light') ? 'light' : 'dark');
+}}
+if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light');
+
+// TOC popup
+function toggleToc() {{
+  const popup = document.getElementById('toc-popup');
+  if (popup.style.display === 'none') {{
+    // Populate links from section titles
+    const links = document.getElementById('toc-links');
+    links.innerHTML = '';
+    document.querySelectorAll('.section-title, .pred-section .section-title').forEach(el => {{
+      const section = el.closest('[id]') || el.closest('.section') || el.closest('.pred-section');
+      if (section) {{
+        const id = section.id || '';
+        const a = document.createElement('a');
+        a.href = '#' + id;
+        a.textContent = el.textContent;
+        a.style.cssText = 'font-size:0.82rem; color:var(--text); text-decoration:none; padding:6px 8px; border-radius:6px; display:block;';
+        a.onmouseover = function() {{ this.style.background = 'var(--accent-soft)'; }};
+        a.onmouseout = function() {{ this.style.background = 'none'; }};
+        a.onclick = function() {{ popup.style.display = 'none'; }};
+        links.appendChild(a);
+      }}
+    }});
+    popup.style.display = 'block';
+  }} else {{
+    popup.style.display = 'none';
+  }}
+}}
+
+// Close TOC on outside click
+document.addEventListener('click', e => {{
+  const menu = document.getElementById('fab-menu');
+  if (!menu.contains(e.target)) document.getElementById('toc-popup').style.display = 'none';
+}});
+</script>
 
 </body>
 </html>"""
@@ -918,13 +1004,13 @@ def _divisional_tables(chart):
         div = chart['divisional'][key]
         html += f'<div class="card card-alt"><strong style="color:var(--accent); font-size:0.8rem;">{label}</strong>'
         html += f'<div style="font-size:0.8rem; color:var(--text-dim); margin:6px 0;">Lagna: {div["ascendant"]["sign"]}</div>'
-        html += '<table class="data-table" style="font-size:0.82rem;">'
+        html += '<div class="table-scroll"><table class="data-table" style="font-size:0.82rem;">'
         html += '<tr><th>Planet</th><th>Sign</th><th>House</th><th>Lord</th></tr>'
         for name in PLANETS:
             d = div[name]
             pc = planet_class(name)
             html += f'<tr><td class="{pc}">{PLANET_ABBR[name]} {name}</td><td>{d["sign"]}</td><td>{d["house"]}</td><td>{d["lord"]}</td></tr>'
-        html += '</table></div>'
+        html += '</table></div></div>'
     html += '</div>'
     return html
 
@@ -1714,11 +1800,15 @@ def _predictions_css():
 def _render_toc():
     """Table of contents for prediction sections."""
     links = [
+        ('lucky-points', 'Lucky Points'),
+        ('avkahada', 'Avkahada Chakra'),
+        ('nakshatra-phal', 'Nakshatra Phal'),
         ('doshas', 'Doshas'),
         ('planetary-analysis', 'Planetary Analysis'),
         ('lal-kitab', 'Lal Kitab'),
         ('life-predictions', 'Life Predictions'),
         ('yearly-forecast', '10-Year Forecast'),
+        ('sade-sati', 'Sade Sati'),
         ('remedies', 'Remedies'),
         ('house-strength', 'House Strength'),
         ('karmic-lessons', 'Karmic Lessons'),
@@ -2072,14 +2162,137 @@ def _render_daily_rituals(rituals):
 </div>'''
 
 
+def _render_lucky_points(lp):
+    if not lp:
+        return ''
+    items = [
+        ('Lucky Number', str(lp.get('lucky_number', ''))),
+        ('Good Numbers', ', '.join(str(n) for n in lp.get('good_numbers', []))),
+        ('Evil Numbers', ', '.join(str(n) for n in lp.get('evil_numbers', []))),
+        ('Lucky Days', ', '.join(lp.get('lucky_days', []))),
+        ('Lucky Stone', lp.get('lucky_stone', '')),
+        ('Lucky Metal', lp.get('lucky_metal', '')),
+        ('Lucky Colors', lp.get('lucky_colors', '')),
+        ('Good Planets', ', '.join(lp.get('good_planets', []))),
+        ('Bad Planets', ', '.join(lp.get('bad_planets', []))),
+        ('Friendly Signs', ', '.join(lp.get('friendly_signs', []))),
+        ('Good Years (Age)', ', '.join(str(y) for y in lp.get('good_years', []))),
+    ]
+    rows = ''
+    for label, val in items:
+        if val:
+            rows += f'<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border);"><span style="color:var(--text-dim);">{label}</span><strong style="color:var(--text-bright);">{val}</strong></div>'
+
+    return f'''<div class="pred-section" id="lucky-points">
+  <div class="section-title">Lucky Points</div>
+  <div class="card">{rows}</div>
+</div>'''
+
+
+def _render_sade_sati(ss):
+    if not ss:
+        return ''
+
+    status_html = ''
+    status = ss.get('current_status', '')
+    if status:
+        color = 'var(--accent)' if 'currently' in status.lower() else 'var(--green)'
+        status_html = f'<div style="padding:12px; background:var(--card-alt); border-radius:8px; margin-bottom:14px; font-size:0.9rem; color:{color}; font-weight:600;">{status}</div>'
+
+    periods_html = ''
+    for p in ss.get('periods', []):
+        phase_color = {'Rising': 'var(--gold)', 'Peak': 'var(--accent)', 'Setting': 'var(--text-dim)'}.get(p.get('phase', ''), 'var(--text-dim)')
+        desc = p.get('description', '')
+        periods_html += f'''<div style="padding:10px 0; border-bottom:1px solid var(--border);">
+  <div style="display:flex; justify-content:space-between; align-items:center;">
+    <span><strong style="color:var(--text-bright);">{p.get('type', '')}</strong> <span style="color:{phase_color}; font-size:0.82rem;">({p.get('phase', '')})</span></span>
+    <span style="font-size:0.8rem; color:var(--text-dim);">{p.get('start', '')} — {p.get('end', '')}</span>
+  </div>
+  <div style="font-size:0.8rem; color:var(--text-dim); margin-top:2px;">Saturn in {p.get('saturn_sign', '')}</div>
+  {"<div style='font-size:0.85rem; margin-top:6px; line-height:1.6;'>" + desc + "</div>" if desc else ""}
+</div>'''
+
+    phase_desc = ''
+    for key in ('rising_description', 'peak_description', 'setting_description'):
+        if ss.get(key):
+            phase_name = key.replace('_description', '').title()
+            phase_desc += f'<div class="karma-card"><div class="karma-label">Sade Sati {phase_name} Phase</div><div class="karma-text">{ss[key]}</div></div>'
+
+    return f'''<div class="pred-section" id="sade-sati">
+  <div class="section-title">Sade Sati Report</div>
+  {status_html}
+  {phase_desc}
+  <div class="card" style="max-height:400px; overflow-y:auto;">
+    {periods_html}
+  </div>
+</div>'''
+
+
+def _render_avkahada(av):
+    if not av:
+        return ''
+    fields = [
+        ('Varna', 'varna'), ('Yoni', 'yoni'), ('Gana', 'gana'),
+        ('Vasya', 'vasya'), ('Nadi', 'nadi'), ('Paya', 'paya'), ('Tatva', 'tatva'),
+    ]
+    rows = ''
+    for label, key in fields:
+        val = av.get(key, '')
+        desc = av.get(f'{key}_desc', '')
+        rows += f'''<div style="padding:10px 0; border-bottom:1px solid var(--border);">
+  <div style="display:flex; justify-content:space-between;">
+    <span style="color:var(--text-dim);">{label}</span>
+    <strong style="color:var(--text-bright);">{val}</strong>
+  </div>
+  {"<div style='font-size:0.82rem; color:var(--text-dim); margin-top:4px;'>" + desc + "</div>" if desc else ""}
+</div>'''
+
+    return f'''<div class="pred-section" id="avkahada">
+  <div class="section-title">Avkahada Chakra</div>
+  <div class="card">{rows}</div>
+</div>'''
+
+
+def _render_nakshatra_phal(np):
+    if not np:
+        return ''
+    sections = ''
+    for key, title in [('personality', 'Personality'), ('education_income', 'Career & Income'),
+                        ('family_life', 'Family & Relationships'), ('health', 'Health')]:
+        text = np.get(key, '')
+        if text:
+            sections += f'''<div style="margin-bottom:16px;">
+  <h3 style="font-size:0.9rem; color:var(--accent); margin-bottom:6px; border-left:3px solid var(--accent); padding-left:10px;">{title}</h3>
+  <div style="font-size:0.88rem; line-height:1.8;">{text}</div>
+</div>'''
+
+    best_years = np.get('best_years', [])
+    years_html = ''
+    if best_years:
+        years_html = f'<div style="margin-top:10px; font-size:0.85rem; color:var(--gold);"><strong>Key ages:</strong> {", ".join(str(y) for y in best_years)}</div>'
+
+    return f'''<div class="pred-section" id="nakshatra-phal">
+  <div class="section-title">Nakshatra Phal — {np.get("nakshatra", "")} Nakshatra</div>
+  <div style="font-size:0.82rem; color:var(--text-dim); margin-bottom:12px;">Your Moon nakshatra shapes your emotional nature, instincts, and life patterns.</div>
+  <div class="card">
+    {sections}
+    {years_html}
+  </div>
+</div>'''
+
+
 def _render_all_predictions(pred):
     """Render all prediction sections into HTML."""
     html = _render_toc()
+    html += _render_lucky_points(pred.get('lucky_points'))
+    html += _render_avkahada(pred.get('avkahada_chakra'))
+    html += _render_nakshatra_phal(pred.get('nakshatra_phal'))
     html += _render_doshas(pred['doshas'])
     html += _render_planetary_analysis(pred['planetary_analysis'])
     html += _render_lal_kitab(pred['lal_kitab'])
     html += _render_life_predictions(pred['life_predictions'])
     html += _render_yearly_forecast(pred['yearly_forecast'])
+    html += _render_sade_sati(pred.get('sade_sati'))
     html += _render_remedies(pred['remedies'])
     html += _render_house_strengthening(pred['house_strengthening'])
     html += _render_karmic_lessons(pred['karmic_lessons'])

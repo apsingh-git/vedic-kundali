@@ -642,55 +642,46 @@ def analyze_planets(chart):
         # ── Dignity effect (deep) ──
         dignity_effects = {
             'Exalted': (
-                f'{planet} is at peak strength in {sign}, operating like a king on his throne. '
-                f'The significations of house {house} ({house_sig}) come to you with an ease that others envy. '
-                f'This is a past-life reward, a karmic credit that activates especially during {planet}\'s dasha. '
-                f'People naturally respect your authority in {karaka_theme}-related matters. '
-                f'However, exalted planets can also create overconfidence — the very ease can make you complacent. '
-                f'Use this strength with humility, as the universe tests those it gives the most to.'
+                f'{planet} is exalted in {sign}, its strongest possible placement. '
+                f'Your {karaka_theme} and house {house} matters ({house_sig}) are naturally strong and produce results without excessive effort. '
+                f'During {planet}\'s dasha period, expect recognition and tangible gains in these areas. '
+                f'This placement protects house {house} matters throughout life.'
             ),
             'Moolatrikona': (
-                f'{planet} is in its moolatrikona zone in {sign} — its office, where it works with full authority. '
-                f'This is nearly as powerful as exaltation but carries a stronger sense of duty and purpose. '
-                f'{planet} here actively builds and creates in house {house} ({house_sig}) matters. '
-                f'During {planet}\'s dasha, expect significant accomplishments. '
-                f'The planet\'s natural karakatva ({karaka_theme}) is expressed professionally and practically.'
+                f'{planet} is in moolatrikona in {sign}, nearly as strong as exaltation with a sharper focus on productive output. '
+                f'{planet} actively drives results in house {house} ({house_sig}) matters and {karaka_theme} themes. '
+                f'During {planet}\'s dasha, expect significant accomplishments in these areas. '
+                f'This is a dependable, high-performing placement.'
             ),
             'Own Sign': (
-                f'{planet} is in its own home ({sign}) — comfortable, stable, and in control. '
-                f'House {house} matters ({house_sig}) are well-protected and receive consistent support throughout life. '
-                f'This gives an inner confidence that does not need external validation. '
-                f'During {planet}\'s dasha, these matters run smoothly without major disruptions. '
-                f'The one caution: own-sign planets can become too comfortable — growth requires stepping outside this zone.'
+                f'{planet} sits in its own sign ({sign}), making it stable and self-sufficient. '
+                f'House {house} matters ({house_sig}) are well-protected and run smoothly throughout life. '
+                f'During {planet}\'s dasha, these areas function reliably without major disruptions. '
+                f'{karaka_theme.capitalize()} themes carry a quiet, lasting strength.'
             ),
             'Friendly': (
-                f'{planet} is in {sign}, ruled by its friend {sign_lord} — like visiting a close friend\'s house. '
-                f'You are welcomed, given resources, and supported, though it is not your own territory. '
-                f'House {house} ({house_sig}) matters progress with cooperation from the environment. '
-                f'Results are good but not extraordinary — moderate effort yields solid returns. '
-                f'The friendship between {planet} and {sign_lord} means their dasha periods interact well.'
+                f'{planet} is in {sign}, ruled by its friend {sign_lord}, giving it solid support. '
+                f'House {house} ({house_sig}) matters progress well with moderate effort. '
+                f'Results are good, and the dasha periods of both {planet} and {sign_lord} tend to be cooperative. '
+                f'Not the strongest placement, but dependably positive.'
             ),
             'Neutral': (
-                f'{planet} is in {sign}, a neutral sign where it neither thrives nor struggles. '
-                f'House {house} ({house_sig}) results are average and depend heavily on aspects received '
-                f'and which dasha period is running. A strong benefic aspect can elevate it significantly, '
-                f'while a malefic aspect can push it toward negative results. '
-                f'This is the most "modifiable" dignity — your actions and remedies have the most impact here.'
+                f'{planet} is in {sign}, a neutral sign, so house {house} ({house_sig}) results depend heavily on aspects and the running dasha. '
+                f'A benefic aspect can elevate this planet significantly; a malefic aspect can drag it down. '
+                f'Your actions and remedies have the most impact on a neutral-dignity planet. '
+                f'{karaka_theme.capitalize()} themes are workable but need conscious attention.'
             ),
             'Enemy': (
-                f'{planet} is in {sign}, ruled by its enemy {sign_lord} — like working under a hostile boss. '
-                f'Every achievement requires double the effort, and recognition comes reluctantly. '
-                f'House {house} ({house_sig}) matters face persistent resistance. {karaka_theme.capitalize()} themes '
-                f'feel like swimming upstream. However, enemy-sign planets forge resilience. After age 32-35, '
-                f'the person forged through this difficulty develops a toughness others lack. Remedies recommended.'
+                f'{planet} is in {sign}, ruled by its enemy {sign_lord}, so house {house} ({house_sig}) matters require double the effort. '
+                f'{karaka_theme.capitalize()} themes face persistent resistance, especially before age 32-35. '
+                f'After that age, the sustained effort builds a resilience that others lack. '
+                f'Remedies for {planet} are recommended to ease the friction.'
             ),
             'Debilitated': (
-                f'{planet} is at its weakest in {sign} — like a king exiled to enemy territory. '
-                f'House {house} ({house_sig}) matters struggle significantly in the first half of life. '
-                f'{karaka_theme.capitalize()} themes bring frustration — you have the talent but the world does not cooperate. '
-                f'The critical turning point comes between ages 30-36 when debilitated planets often undergo reversal — '
-                f'accumulated struggle converts into hard-won wisdom. Check for Neecha Bhanga cancellation. '
-                f'Remedies are essential for this planet.'
+                f'{planet} is debilitated in {sign}, its weakest placement. '
+                f'House {house} ({house_sig}) matters and {karaka_theme} themes struggle in the first half of life. '
+                f'A turning point comes between ages 30-36 when accumulated experience begins converting struggle into hard-won competence. '
+                f'Check for Neecha Bhanga (debilitation cancellation) and prioritize remedies for this planet.'
             ),
         }
         dignity_text = dignity_effects.get(dignity, f'{planet} is {dignity} in {sign}.')
@@ -718,29 +709,22 @@ def analyze_planets(chart):
         retro_text = ''
         if is_retro and planet not in ('Sun', 'Moon', 'Rahu', 'Ketu'):
             retro_text = (
-                f'{planet} is retrograde — a deeply significant condition that reverses the planet\'s mode of operation. '
-                f'Instead of expressing outward, {planet}\'s energy turns inward, creating an intensely private inner world '
-                f'around {karaka_theme} themes. You may feel these significations are "stuck" or delayed in the first half of life — '
-                f'as if the universe is asking you to master the internal lesson before granting external results. '
-                f'Past-life karma resurfaces: unfinished business, recurring patterns, or inexplicable fascinations. '
-                f'After age 30-35, retrograde planets often produce a breakthrough — accumulated internal pressure releases outward. '
-                f'In house {house}, this means {house_sig} matters follow a "late bloomer" trajectory. '
-                f'You may revisit decisions, get second chances, or find that initial failure was actually preparation.'
+                f'Retrograde {planet} delays {karaka_theme}-related results and house {house} ({house_sig}) matters until the early-to-mid 30s. '
+                f'The energy turns inward first, so you develop deep internal understanding of these themes before external results show up. '
+                f'After age 30-35, a breakthrough often arrives as the accumulated internal work converts into visible progress. '
+                f'Expect second chances and revised decisions around house {house} matters throughout life.'
             )
 
         # ── Combustion (deep) ──
         combust_text = ''
         if is_combust:
             dist = p.get('sun_distance', 0)
+            severity_note = 'strong' if dist < 5 else ('moderate' if dist < 10 else 'mild')
             combust_text = (
-                f'{planet} is combust — only {dist:.1f} degrees from the Sun, its light swallowed by the Sun\'s brilliance. '
-                f'You possess genuine {karaka_theme}-related abilities, but they remain hidden or unrecognized. '
-                f'Others may take credit for your work, or circumstances prevent showcasing these talents. '
-                f'The Sun\'s ego energy overshadows {planet}\'s more subtle expression. '
-                f'{"The combustion is tight (under 5 degrees), making this effect quite pronounced. " if dist < 5 else ""}'
-                f'{"The combustion is moderate — the effect exists but is not overwhelming. " if 5 <= dist < 10 else ""}'
-                f'{"The combustion is wide — the effect is present but mild. " if dist >= 10 else ""}'
-                f'Remedies for both {planet} and Sun are recommended.'
+                f'{planet} is combust ({dist:.1f} degrees from the Sun, {severity_note} effect). '
+                f'Your {karaka_theme}-related abilities are real but stay hidden or get overshadowed. '
+                f'In daily life, this shows up as others taking credit for your work or circumstances preventing you from showcasing these strengths. '
+                f'Remedies for both {planet} and Sun help bring these suppressed qualities to the surface.'
             )
 
         # ── Aspects (deep with dignity context) ──
@@ -790,24 +774,21 @@ def analyze_planets(chart):
             lord_house_sig = HOUSE_SIGNIFICATIONS.get(lord_house, '').split(',')[0].strip().lower()
             if lord_dignity in ('Exalted', 'Own Sign', 'Moolatrikona'):
                 lord_text = (
-                    f'The lord of house {house} is {house_lord}, placed strongly in {lord_sign} '
-                    f'(House {lord_house}, {lord_dignity}). Excellent — the supporting infrastructure is solid. '
-                    f'{planet}\'s potential has a strong foundation. The lord connects house {house} ({house_sig}) '
-                    f'to {lord_house_sig} matters — these life areas benefit from each other.'
+                    f'Your house {house} ({house_sig}) is ruled by {house_lord}, who sits strongly in {lord_sign} '
+                    f'({lord_dignity}) in house {lord_house}. This means {house_sig} and {lord_house_sig} '
+                    f'matters reinforce each other, and {house_lord} gives {planet} a solid foundation to deliver results.'
                 )
             elif lord_dignity in ('Debilitated', 'Enemy'):
                 lord_text = (
-                    f'The lord of house {house} is {house_lord}, placed weakly in {lord_sign} '
-                    f'(House {lord_house}, {lord_dignity}). This undermines {planet}\'s effectiveness — '
-                    f'like a talented employee in a poorly managed company. '
-                    f'Strengthening {house_lord} through remedies would indirectly benefit {planet}.'
+                    f'Your house {house} ({house_sig}) is ruled by {house_lord}, who is weak in {lord_sign} '
+                    f'({lord_dignity}, house {lord_house}). This undercuts {planet}\'s ability to deliver fully. '
+                    f'Strengthening {house_lord} through remedies would indirectly improve {planet}\'s results too.'
                 )
             else:
                 lord_text = (
-                    f'The lord of house {house} is {house_lord} in {lord_sign} '
-                    f'(House {lord_house}, {lord_dignity}). Moderate support — functional but not exceptional. '
-                    f'The link between house {house} ({house_sig}) and house {lord_house} ({lord_house_sig}) '
-                    f'activates during either planet\'s dasha.'
+                    f'Your house {house} ({house_sig}) is ruled by {house_lord} in {lord_sign} '
+                    f'({lord_dignity}, house {lord_house}). Adequate support, linking {house_sig} to '
+                    f'{lord_house_sig} matters. This connection activates during either planet\'s dasha.'
                 )
 
         # ── Conjunctions ──
@@ -842,22 +823,26 @@ def analyze_planets(chart):
                 break
 
         # ── Synthesized narrative ──
-        narrative = (
-            f'{planet} in {sign} (House {house}, {nakshatra}) tells the story of how '
-            f'{karaka_theme} plays out in your life through the lens of {house_sig}. '
-        )
+        strength_parts = []
         if dignity in ('Exalted', 'Own Sign', 'Moolatrikona'):
-            narrative += f'With {dignity.lower()} dignity, this is one of the strongest planets in your chart — lean into its gifts. '
-        elif dignity in ('Debilitated', 'Enemy'):
-            narrative += f'With {dignity.lower()} dignity, this planet needs conscious attention, remedies, and patience. '
-        if is_retro and planet not in ('Sun', 'Moon', 'Rahu', 'Ketu'):
-            narrative += 'Being retrograde adds delayed but eventually powerful expression. '
-        if is_combust:
-            narrative += 'Combustion suppresses outward manifestation, requiring remedial support. '
+            strength_parts.append(f'{dignity.lower()} dignity')
         if sum(1 for a in aspects_received if a['nature'] == 'benefic') > 0:
-            narrative += 'Benefic aspects provide protection and enhancement. '
+            strength_parts.append('benefic aspects')
+        weakness_parts = []
+        if dignity in ('Debilitated', 'Enemy'):
+            weakness_parts.append(f'{dignity.lower()} dignity')
+        if is_retro and planet not in ('Sun', 'Moon', 'Rahu', 'Ketu'):
+            weakness_parts.append('retrograde status (delays results until 30s)')
+        if is_combust:
+            weakness_parts.append('combustion (hidden talents)')
+
+        narrative = f'{planet} in house {house} shapes your {karaka_theme} and {house_sig} matters. '
+        if strength_parts:
+            narrative += f'With {" and ".join(strength_parts)}, this is one of the stronger planets in your chart. '
+        if weakness_parts:
+            narrative += f'Challenges here include {" and ".join(weakness_parts)}, so remedies and patience help. '
         if conjuncts:
-            narrative += f'Sharing space with {", ".join(conjuncts)} creates a complex dynamic in house {house}. '
+            narrative += f'Conjunction with {", ".join(conjuncts)} adds complexity to house {house}. '
 
         analyses.append({
             'planet': planet, 'sign': sign, 'house': house, 'degree': degree,
@@ -2837,463 +2822,244 @@ def get_house_strengthening(chart):
 _RAHU_SIGN_KARMA = {
     'Aries': {
         'this_life': (
-            'Learn courage, independence, and self-assertion without waiting for anyone\'s permission. '
-            'You are meant to initiate, to be the first one through the door, to take risks that others will not. '
-            'Life will repeatedly place you in situations where you must stand alone and fight for what you believe, '
-            'whether that means starting a business, leaving a stagnant relationship, or confronting authority figures. '
-            'The pattern that holds you back is reflexive people-pleasing, especially in romantic partnerships and '
-            'close friendships where you surrender your needs to keep the peace. Ages 28-32 mark a turning point '
-            'where a major life event forces you to choose yourself over the comfort of being liked.'
+            'Learn independence and self-assertion. Life will repeatedly force you to stand alone, start things, '
+            'and fight for what you believe. The pattern holding you back is people-pleasing, especially in partnerships. '
+            'Ages 28-32 mark a turning point where a major event forces you to choose yourself.'
         ),
         'past_life': (
-            'Ketu in Libra reveals a past life deeply invested in partnerships, diplomacy, and the art of keeping '
-            'others happy. You may have been a counselor, mediator, or someone whose entire identity was woven into '
-            'a marriage or business alliance. There is a residual skill for reading people and negotiating, but also '
-            'a deep habit of losing yourself inside another person\'s needs. In that lifetime, you never discovered '
-            'what you wanted independent of a partner, and that unfinished business follows you now.'
+            'Ketu in Libra points to a past life invested in partnerships and diplomacy. You carry strong relationship '
+            'skills but also a habit of losing yourself inside another person\'s needs.'
         ),
         'lesson': (
-            'Your soul\'s assignment is to build an individual identity and a warrior spirit from the ground up. '
-            'Every time you feel the pull to compromise your position just to maintain harmony, recognize it as '
-            'the old pattern speaking. Relationships will still matter, but they must orbit a self that actually '
-            'exists. The real growth happens when you can be direct, even confrontational, and still sleep well '
-            'at night. Physical activities, martial arts, competitive sports, or any practice that builds personal '
-            'courage will accelerate your karmic progress.'
+            'Build an individual identity from the ground up. When you feel the pull to compromise just to keep the peace, '
+            'recognize the old pattern. Physical activities, competitive sports, or martial arts accelerate your progress.'
         ),
     },
     'Taurus': {
         'this_life': (
-            'Build genuine material security, develop unwavering self-worth, and learn to enjoy sensory '
-            'pleasures without guilt or obsession. You are here to plant roots, accumulate resources, and '
-            'create something lasting, whether a family, a financial foundation, or an artistic body of work. '
-            'Life scenarios will test your ability to stay calm when things are unstable; your growth comes '
-            'from choosing steady effort over dramatic reinvention. The relationships most affected are those '
-            'with business partners and intimate connections, where your tendency toward intensity can push '
-            'people away. Ages 30-35 bring a crystallizing moment around money or property that anchors your values.'
+            'Build real material security and learn to enjoy stability without guilt. You are here to plant roots '
+            'and create something lasting. Ages 30-35 bring a defining moment around money or property that anchors your values.'
         ),
         'past_life': (
-            'Ketu in Scorpio points to a past life steeped in intensity, crisis, secrecy, and psychological '
-            'power games. You may have been involved in espionage, healing, occult practices, or lived through '
-            'wars and upheaval. There is a deep familiarity with chaos and an almost addictive pull toward '
-            'dramatic situations. That lifetime gave you tremendous resilience and penetrating insight into '
-            'human nature, but it also left a pattern of seeking crisis even when life is calm, as if peace '
-            'feels suspicious.'
+            'Ketu in Scorpio points to a past life of intensity, crisis, and psychological power games. '
+            'You carry deep resilience but also a pull toward drama even when life is calm.'
         ),
         'lesson': (
-            'Find beauty in simplicity and trust that a quiet life is not a wasted life. Your karmic work '
-            'is to replace the impulse to blow things up with the patience to let them grow. Build rather '
-            'than destroy. Choose stability over drama even when it feels boring. The deepest healing happens '
-            'when you allow yourself to enjoy a meal, a garden, music, or the presence of a loved one without '
-            'scanning for the hidden threat. Financial literacy and hands-on creative work are powerful tools '
-            'for this soul journey.'
+            'Choose stability over drama. Build rather than destroy. Financial literacy and hands-on creative work '
+            'are your strongest tools for growth.'
         ),
     },
     'Gemini': {
         'this_life': (
-            'Learn the art of communication, cultivate genuine curiosity, and develop intellectual versatility. '
-            'You are meant to be a connector of ideas and people, someone who gathers information from diverse '
-            'sources and weaves it into something useful. Life will place you in environments that require '
-            'writing, speaking, negotiation, or teaching in informal settings. Sibling relationships, neighbors, '
-            'and short-distance travel are karmic activation zones. Your behavioral pattern to watch is '
-            'preachiness, the inherited habit of lecturing instead of conversing. Ages 25-30 bring a pivotal '
-            'experience, often through a sibling or peer, that forces you to listen as much as you speak.'
+            'Develop communication skills and genuine curiosity. Life will place you in environments requiring writing, '
+            'speaking, or teaching. Sibling relationships are a key growth area. Ages 25-30 bring a pivotal experience '
+            'that forces you to listen as much as you speak.'
         ),
         'past_life': (
-            'Ketu in Sagittarius reveals a past life as a preacher, philosopher, professor, or religious '
-            'figure who held one grand truth and broadcast it to others. You carry an unconscious assumption '
-            'that you already know the answer, which can make you dismissive of small talk, local knowledge, '
-            'or anyone who disagrees. That lifetime gave you faith and optimism, but also a rigidity of belief '
-            'that prevented you from seeing the complexity of everyday human experience.'
+            'Ketu in Sagittarius reveals a past life as a preacher or philosopher. You carry an assumption that you '
+            'already know the answer, which can make you dismissive of everyday perspectives.'
         ),
         'lesson': (
-            'Be a student again, not just a teacher. Your growth lies in asking questions you do not already '
-            'know the answer to. Explore many perspectives before committing to one. Read widely, talk to '
-            'people outside your philosophical circle, and resist the urge to wrap every conversation in a '
-            'moral lesson. The skill you are developing is adaptability of mind, the ability to hold two '
-            'contradictory ideas and remain curious. Journaling, debate, language learning, and any practice '
-            'that rewards intellectual humility will serve your evolution.'
+            'Be a student again. Explore many viewpoints before committing to one. Journaling, debate, and language '
+            'learning reward the intellectual humility this placement demands.'
         ),
     },
     'Cancer': {
         'this_life': (
-            'Develop emotional intelligence, learn to nurture others without condition, and create a genuine '
-            'sense of home and family belonging. You are here to discover that emotional bonds are not weaknesses '
-            'but the foundation of a meaningful life. Life will repeatedly place you in caregiving roles, whether '
-            'as a parent, a team leader who becomes everyone\'s emotional anchor, or a friend people turn to in '
-            'crisis. The relationships most affected are those with your mother or maternal figures and your own '
-            'children. Your behavioral challenge is emotional detachment disguised as professionalism. Ages 27-33 '
-            'bring a major emotional opening, often through parenthood or a health event in the family, that '
-            'cracks the professional armor.'
+            'Develop emotional intelligence and learn to nurture others genuinely. Life will place you in caregiving roles. '
+            'Your challenge is emotional detachment disguised as professionalism. Ages 27-33 bring a major emotional '
+            'opening, often through parenthood or a family health event.'
         ),
         'past_life': (
-            'Ketu in Capricorn shows a past life dedicated to career, public status, and institutional duty. '
-            'You may have been a government official, a corporate leader, or someone who sacrificed personal '
-            'warmth for professional achievement. The residual pattern is a tendency to measure your worth by '
-            'what you have accomplished rather than who you love. That lifetime left you competent and disciplined '
-            'but emotionally hungry in ways you may not consciously recognize.'
+            'Ketu in Capricorn shows a past life dedicated to career and public status. You carry professional competence '
+            'but are emotionally underdeveloped in ways you may not recognize.'
         ),
         'lesson': (
-            'Open your heart, even when it feels inefficient. Family and emotional bonds are your growth area '
-            'now, not career achievements. The promotion will come regardless because Ketu already gave you '
-            'professional skills. What will not come automatically is the ability to sit with someone in their '
-            'pain, to cook a meal as an act of love, or to let yourself cry without judging the tears as weakness. '
-            'Cooking, nurturing plants, water-based activities, and spending unhurried time with family are '
-            'karmic accelerators for this placement.'
+            'Prioritize family and emotional bonds over career achievements. The professional skills are already built in. '
+            'Cooking, nurturing plants, and unhurried family time accelerate your growth.'
         ),
     },
     'Leo': {
         'this_life': (
-            'Develop bold self-expression, creative confidence, and personal leadership that inspires others. '
-            'You are meant to step into the spotlight and let people see your unique gifts without shrinking. '
-            'Life will create stages for you, literal or figurative, whether in performance, management, '
-            'entrepreneurship, or parenthood where your style of authority defines the culture. The relationships '
-            'most affected are romantic ones and the bond with your children, where you must learn to give from '
-            'a place of fullness rather than sacrifice. Your behavioral trap is hiding behind group causes or '
-            'intellectual detachment to avoid personal vulnerability. Ages 29-34 bring a creative or romantic '
-            'breakthrough that demands you stop playing small.'
+            'Step into the spotlight and express your creative gifts boldly. Life will create stages for you in performance, '
+            'management, or parenthood. Your trap is hiding behind group causes to avoid personal vulnerability. '
+            'Ages 29-34 bring a creative or romantic breakthrough.'
         ),
         'past_life': (
-            'Ketu in Aquarius reveals a past life spent serving groups, humanitarian causes, and collective '
-            'movements. You may have been a revolutionary, a scientist working for the public good, or a '
-            'community organizer who submerged personal identity into a larger mission. That lifetime gave you '
-            'the ability to see the big picture and care about humanity, but it also created a pattern of self-'
-            'erasure, a belief that individual desires are selfish and should be suppressed for the group.'
+            'Ketu in Aquarius reveals a past life serving groups and humanitarian causes. You carry big-picture thinking '
+            'but also a pattern of suppressing individual desires for the collective.'
         ),
         'lesson': (
-            'It is your turn to shine individually, and doing so is not a betrayal of the collective. Create, '
-            'lead, and express your unique identity without guilt. The world needs your particular light, not '
-            'a diluted version filtered through committee approval. Take credit for your work, sign your name '
-            'to your art, and let romantic love be joyful rather than ideological. Theater, creative writing, '
-            'working with children, and any practice that puts your personal stamp on the world will accelerate '
-            'your karmic growth.'
+            'Shine individually without guilt. Take credit for your work and let romantic love be joyful. '
+            'Creative writing, theater, and working with children accelerate your growth.'
         ),
     },
     'Virgo': {
         'this_life': (
-            'Develop practical competence, serve others through tangible skill, and bring order to the chaos '
-            'around you. You are here to learn that spirituality without structure is just escapism, and that '
-            'mastering the details of daily life is a profound form of devotion. Life will repeatedly ask you '
-            'to diagnose problems, improve systems, and care for others\' physical health. The relationships '
-            'most affected are professional ones and friendships where people depend on your competence. Your '
-            'behavioral challenge is the pull toward vagueness and avoidance of concrete commitments. Ages 26-31 '
-            'bring a health event or work crisis that forces you to get organized and develop real expertise.'
+            'Develop practical competence and serve others through tangible skill. Life will ask you to diagnose problems '
+            'and improve systems. Your challenge is a pull toward vagueness and avoiding concrete commitments. '
+            'Ages 26-31 bring a health or work crisis that forces you to get organized.'
         ),
         'past_life': (
-            'Ketu in Pisces points to a past life of spiritual dissolution, artistic dreaming, or monastic '
-            'withdrawal. You may have been a mystic, a poet, or someone who lived near water in contemplative '
-            'isolation. That lifetime gave you compassion, intuition, and a rich inner world, but it also '
-            'weakened your boundaries and your ability to function in practical reality. There is a residual '
-            'tendency to space out, to trust the universe when action is what is actually required.'
+            'Ketu in Pisces points to a past life of spiritual dissolution or artistic dreaming. You carry compassion '
+            'and intuition but also weakened boundaries and difficulty functioning in practical reality.'
         ),
         'lesson': (
-            'Ground your considerable spiritual sensitivity in practical service. Organize rather than dissolve. '
-            'The universe is asking you to get specific this time: learn a trade, develop a health routine, '
-            'manage your finances, serve others with measurable results. Details are not the enemy of '
-            'transcendence; they are its vehicle. Nutrition, Ayurveda, data analysis, craftsmanship, or any '
-            'discipline that requires precision will serve your karmic evolution. The mantra for this placement '
-            'is: do the work in front of you and the mystical insights will follow.'
+            'Ground your spiritual sensitivity in practical service. Learn a trade, develop a health routine, manage '
+            'your finances. Do the work in front of you and deeper insights will follow.'
         ),
     },
     'Libra': {
         'this_life': (
-            'Learn genuine partnership, cultivate diplomacy, develop an eye for beauty and fairness, and '
-            'build your life around meaningful one-on-one relationships. You are here to discover that cooperation '
-            'is not compromise and that your identity can expand rather than shrink inside a committed bond. '
-            'Life scenarios will repeatedly bring partners, whether romantic, professional, or creative, who '
-            'challenge you to negotiate rather than dominate. The relationships most affected are marriage and '
-            'business alliances. Your behavioral trap is reflexive independence, the Ketu-Aries habit of charging '
-            'ahead alone. Ages 28-33 bring a defining relationship that teaches you that shared decisions can be '
-            'stronger than solo ones.'
+            'Learn genuine partnership and diplomacy. Life will bring partners who challenge you to negotiate rather '
+            'than dominate. Your trap is reflexive independence. Ages 28-33 bring a defining relationship that shows '
+            'shared decisions can be stronger than solo ones.'
         ),
         'past_life': (
-            'Ketu in Aries shows a past life as a warrior, athlete, pioneer, or fiercely independent individual '
-            'who survived by personal willpower alone. You carry deep self-reliance and a quick temper, along '
-            'with an unconscious belief that needing someone is dangerous. That lifetime made you strong but '
-            'isolated, and the unfinished karmic business is learning that asking for help and sharing power '
-            'are not signs of weakness.'
+            'Ketu in Aries shows a past life as a warrior or fiercely independent individual. You carry deep self-reliance '
+            'and an unconscious belief that needing someone is dangerous.'
         ),
         'lesson': (
-            'Learn to cooperate without losing yourself. Your growth comes through others, through the mirror '
-            'of a partner who shows you aspects of yourself you cannot see alone. Develop the skills of active '
-            'listening, fair negotiation, and aesthetic appreciation. Take time before reacting in conflict, '
-            'because your reflex is to fight, and the lesson is to find the middle ground. Art, music, couples '
-            'therapy, and legal studies are powerful karmic tools for this placement.'
+            'Learn to cooperate without losing yourself. Develop active listening and fair negotiation skills. '
+            'Art, music, and legal studies are powerful tools for this placement.'
         ),
     },
     'Scorpio': {
         'this_life': (
-            'Embrace deep transformation, develop psychological courage, and learn to wield power without '
-            'being consumed by it. You are meant to dive beneath the surface of every experience and emerge '
-            'changed. Life will bring crises that are not punishments but invitations to shed what is no longer '
-            'true. Inheritance, joint finances, sexuality, and intimate trust are the arenas where your growth '
-            'happens. The relationships most affected are deeply intimate ones, those involving shared money, '
-            'emotional vulnerability, or power dynamics. Your behavioral pattern to watch is avoidance of '
-            'intensity and clinging to material comfort. Ages 30-36 bring a transformative event, often '
-            'financial or psychological, that permanently shifts your understanding of power.'
+            'Embrace transformation and develop psychological courage. Joint finances, inheritance, and intimate trust '
+            'are your growth arenas. Your pattern to watch is avoiding intensity and clinging to comfort. '
+            'Ages 30-36 bring a transformative event that shifts your understanding of power.'
         ),
         'past_life': (
-            'Ketu in Taurus reveals a past life of material comfort, sensory pleasure, and stable accumulation. '
-            'You may have been a landowner, a banker, a craftsperson, or someone whose entire world was built '
-            'around physical security. There is a residual attachment to predictability and a fear of the unknown '
-            'that can keep you playing it safe. That lifetime gave you patience and an appreciation for beauty, '
-            'but it also created a resistance to change that this life is designed to dissolve.'
+            'Ketu in Taurus reveals a past life of material comfort and stable accumulation. You carry an attachment '
+            'to predictability and a resistance to change that this life is designed to dissolve.'
         ),
         'lesson': (
-            'Let go of attachment to comfort and allow transformation to do its work. Crisis is not your enemy; '
-            'it is your teacher. The skills you are developing include emotional honesty, the courage to look at '
-            'what others avoid, and the ability to rebuild after loss. Learn about psychology, finances at the '
-            'structural level, energy healing, or any discipline that requires you to confront hidden truths. '
-            'Every time you choose depth over safety, you are fulfilling your karmic contract.'
+            'Let go of attachment to comfort and allow transformation to work. Learn psychology, deep finance, '
+            'or energy healing. Every time you choose depth over safety, you fulfill your karmic contract.'
         ),
     },
     'Sagittarius': {
         'this_life': (
-            'Develop a personal philosophy, pursue higher learning with genuine passion, and expand your vision '
-            'far beyond your immediate environment. You are here to become a teacher, a publisher, a traveler, or '
-            'a thought leader whose ideas influence people across cultures. Life will send you abroad, either '
-            'physically or intellectually, and your growth comes from engaging with foreign perspectives. The '
-            'relationships most affected are those with mentors, professors, in-laws, and people from different '
-            'cultural backgrounds. Your behavioral trap is staying in the safe world of local gossip and surface-'
-            'level networking. Ages 27-33 bring a journey, either literal or intellectual, that permanently '
-            'expands your worldview.'
+            'Develop a personal philosophy and expand your vision through higher learning and foreign perspectives. '
+            'Life will send you abroad, physically or intellectually. Your trap is staying in the safe world of '
+            'local networking. Ages 27-33 bring a journey that permanently expands your worldview.'
         ),
         'past_life': (
-            'Ketu in Gemini points to a past life as a writer, merchant, information broker, or someone who '
-            'mastered the art of knowing a little about everything. You carry skill in communication and quick '
-            'thinking, but also a residual tendency to skim the surface, to collect facts without ever building '
-            'them into wisdom. That lifetime made you clever and adaptable but left your soul hungry for meaning.'
+            'Ketu in Gemini points to a past life as a writer or information broker who knew a little about everything. '
+            'You carry quick thinking but also a tendency to skim the surface without building facts into wisdom.'
         ),
         'lesson': (
-            'Go deeper. Choose wisdom over information, and find one truth worth living for rather than a hundred '
-            'facts worth quoting. Your growth requires sustained study, not quick internet searches. Travel to '
-            'places that challenge your assumptions. Engage with a spiritual or philosophical tradition seriously '
-            'enough to be changed by it. University education, long-distance travel, publishing, and religious '
-            'or dharmic study are powerful vehicles for this soul journey.'
+            'Choose wisdom over information. Engage with a philosophical tradition seriously enough to be changed by it. '
+            'University education, long-distance travel, and publishing are powerful vehicles for growth.'
         ),
     },
     'Capricorn': {
         'this_life': (
-            'Build tangible structure in the public world, develop discipline and legitimate authority, and '
-            'earn a reputation based on real accomplishment. You are meant to lead institutions, manage large '
-            'projects, and leave behind something that outlasts you. Life will test you with responsibility, '
-            'sometimes too early and sometimes all at once. Career, public image, and your relationship with '
-            'authority figures (especially the father) are the primary arenas of growth. Your behavioral pattern '
-            'to watch is retreating into emotional security and family comfort when the world demands you step up. '
-            'Ages 29-36, often coinciding with the Saturn return, bring the defining career moment that establishes '
-            'your public identity.'
+            'Build tangible structure in the public world and earn authority through real accomplishment. Career and '
+            'your relationship with authority figures are the primary growth arenas. Your pattern to watch is retreating '
+            'into family comfort when the world demands you step up. Ages 29-36 bring the defining career moment.'
         ),
         'past_life': (
-            'Ketu in Cancer reveals a past life deeply rooted in home, family, motherhood, or clan loyalty. You '
-            'may have been a caregiver, a homemaker, or someone whose entire identity was bound to domestic life. '
-            'There is a residual pull toward emotional security, a tendency to prioritize feelings over facts, '
-            'and a fear of the cold public world. That lifetime gave you nurturing ability and emotional depth, '
-            'but it also created a dependency on personal relationships for validation.'
+            'Ketu in Cancer reveals a past life rooted in home and family. You carry nurturing ability but also '
+            'a dependency on personal relationships for validation and a fear of the public world.'
         ),
         'lesson': (
-            'Step out of the emotional comfort zone and build something in the material world that commands '
-            'respect. Your growth happens through ambition, strategy, and accepting the weight of authority. '
-            'The family will be fine; what needs your attention is your public legacy. Learn to make decisions '
-            'based on long-term strategy rather than emotional impulse. Business management, government service, '
-            'architecture, and any discipline that requires patience and structural thinking will serve your '
-            'karmic evolution.'
+            'Step out of the emotional comfort zone and build your public legacy. Make decisions based on long-term '
+            'strategy rather than emotional impulse. Business management and architecture serve your evolution.'
         ),
     },
     'Aquarius': {
         'this_life': (
-            'Serve humanity at scale, develop innovative thinking, work through networks and communities, and '
-            'break free from the need for personal applause. You are meant to be a reformer, a technologist, a '
-            'social entrepreneur, or someone whose work benefits the collective rather than glorifying the self. '
-            'Life will place you in groups, organizations, and movements where your role is to facilitate change '
-            'for many. The relationships most affected are friendships and community bonds, which carry more '
-            'karmic weight than romantic ones in this placement. Your behavioral trap is seeking personal glory, '
-            'creative recognition, or romantic validation at the expense of the larger mission. Ages 30-36 bring '
-            'a community-level event or cause that redirects your ambition toward service.'
+            'Serve humanity at scale through innovation and community networks. Your role is to facilitate change '
+            'for many, not to seek personal applause. Friendships carry more karmic weight than romance here. '
+            'Ages 30-36 bring a cause or community event that redirects your ambition toward service.'
         ),
         'past_life': (
-            'Ketu in Leo reveals a past life of royalty, creative authority, or individual glory. You may have '
-            'been a king, an artist, a performer, or someone who commanded center stage. That lifetime gave you '
-            'charisma, creative talent, and confidence, but it also created a deep attachment to being special, '
-            'to being recognized and admired. The residual pattern is an ego that quietly expects the spotlight '
-            'even when the conscious mind says otherwise.'
+            'Ketu in Leo reveals a past life of individual glory or creative authority. You carry charisma and confidence '
+            'but also a deep attachment to being recognized and admired.'
         ),
         'lesson': (
-            'Shift your energy from personal glory to collective benefit. The creativity you carry from past '
-            'lives is not wasted; it is meant to be channeled into innovation that serves many. Let go of the '
-            'need to be the star and learn to be the architect of systems that lift entire communities. Technology, '
-            'social justice, scientific research, grassroots organizing, and humanitarian work are the karmic '
-            'accelerators for this placement. The test is whether you can do good work without needing your name '
-            'on the building.'
+            'Channel your creativity into innovation that serves many. Let go of the need to be the star. '
+            'Technology, social justice, and humanitarian work are the strongest accelerators for this placement.'
         ),
     },
     'Pisces': {
         'this_life': (
-            'Develop spiritual surrender, cultivate boundless compassion, and trust the invisible forces that '
-            'guide life. You are here to dissolve the boundaries between self and other, between the seen and '
-            'the unseen, and to develop faith in something larger than logic. Life will bring experiences that '
-            'cannot be explained rationally: mystical encounters, creative visions, inexplicable acts of grace. '
-            'The relationships most affected are with spiritual teachers, therapists, and anyone who represents '
-            'the numinous. Your behavioral trap is over-analysis, a compulsive need to categorize and control. '
-            'Ages 28-34 bring a spiritual awakening or creative breakthrough that cannot be achieved through '
-            'effort alone; it arrives through letting go.'
+            'Develop spiritual surrender and compassion. Life will bring experiences that logic cannot explain: '
+            'mystical encounters, creative visions, acts of grace. Your trap is over-analysis and a need to control. '
+            'Ages 28-34 bring a spiritual awakening that arrives through letting go, not effort.'
         ),
         'past_life': (
-            'Ketu in Virgo shows a past life devoted to analysis, criticism, practical service, and the pursuit '
-            'of perfection. You may have been a scholar, a healer focused on physical symptoms, a craftsperson, '
-            'or someone who organized systems with meticulous care. That lifetime gave you discrimination and '
-            'competence, but it also created an obsession with getting things right that blocks the experience '
-            'of grace, the unearned goodness that spiritual life is built on.'
+            'Ketu in Virgo shows a past life of analysis, practical service, and pursuit of perfection. You carry '
+            'competence and discrimination but also an obsession with getting things right that blocks grace.'
         ),
         'lesson': (
-            'Let go of the need to analyze and control everything. Trust the current of life. Surrender is '
-            'not weakness; it is the most advanced spiritual practice and it is your specific assignment. The '
-            'skills you already have from past lives will continue to serve you, but the growth edge is in '
-            'the places where analysis fails: art, music, meditation, dreamwork, and devotion to something '
-            'you cannot fully understand. When you find yourself trying to figure out the universe, pause and '
-            'simply be in it.'
+            'Trust the current of life and let go of the need to control everything. Art, music, meditation, '
+            'and devotion to something you cannot fully understand are your growth tools.'
         ),
     },
 }
 
 _SATURN_HOUSE_KARMA = {
     1: (
-        'Discipline in self-expression and physical appearance. Saturn here demands that you earn every ounce of '
-        'respect through demonstrated competence rather than natural charisma or inherited status. Practically, '
-        'this means developing a consistent health routine, maintaining a serious and dependable public image, '
-        'and building your identity through what you do rather than what you say. When you resist this lesson, '
-        'the body rebels with chronic ailments, people underestimate you, and you feel invisible despite real '
-        'ability. The lesson typically crystallizes between ages 28 and 32 during the first Saturn return, when '
-        'a health scare or career setback forces you to take your physical vessel and public persona seriously. '
-        'Mastery looks like a person whose mere presence commands respect, someone lean, disciplined, and '
-        'radiating quiet authority that needs no advertisement.'
+        'Saturn demands you earn respect through proven competence, not charisma. Build a consistent health routine '
+        'and a dependable public image. When you do, people trust your presence without you needing to prove anything.'
     ),
     2: (
-        'Discipline in money, speech, and family values. Saturn here insists that wealth be built rupee by rupee '
-        'through honest labor, never through shortcuts, windfalls, or inherited privilege. Practically, this '
-        'means budgeting rigorously, speaking only what you can stand behind, and earning your place in the family '
-        'rather than assuming it. When you resist, money leaks through careless spending, harsh or untimely '
-        'speech damages relationships, and family members withdraw their support. The lesson crystallizes '
-        'between ages 30 and 35, often through a financial crisis that teaches the difference between '
-        'want and need. Mastery looks like steady, self-made wealth, a reputation for truthful speech, and '
-        'a family structure built on real values rather than obligation or guilt.'
+        'Saturn requires that wealth come through honest, steady labor and that your speech be measured and truthful. '
+        'Budget carefully and earn your place in the family rather than assuming it. '
+        'When you comply, financial stability and family trust grow decade by decade.'
     ),
     3: (
-        'Discipline in communication, courage, and the relationship with siblings. Saturn here requires that '
-        'every word carry weight and that courage be demonstrated through persistent action, not impulsive bravery. '
-        'Practically, this means learning to think before speaking, editing your writing ruthlessly, and '
-        'supporting siblings even when the relationship feels thankless. When you resist, communication '
-        'efforts fall flat, short-distance travel causes problems, and sibling bonds deteriorate into '
-        'cold silence or bitter argument. The lesson crystallizes between ages 27 and 33, often when a '
-        'communication failure or a sibling crisis forces you to develop patience and precision in how you '
-        'express yourself. Mastery looks like a person whose few words carry tremendous authority, whose '
-        'writing or speaking moves people, and whose siblings, however difficult, become allies over time.'
+        'Saturn insists every word carry weight and that courage show through persistence, not impulsiveness. '
+        'Support siblings even when it feels thankless, and refine how you communicate. '
+        'When you comply, your words carry authority and sibling bonds mature into real alliances.'
     ),
     4: (
-        'Discipline at home, in the inner emotional life, and in relation to the mother. Saturn here demands '
-        'that domestic peace be constructed through sustained effort rather than inherited or expected. Practically, '
-        'this means taking responsibility for the household, bearing the emotional weight of family without '
-        'complaint, and providing for your mother even when the relationship is strained. When you resist, the '
-        'home becomes a battleground, property matters stall or bring losses, and inner unhappiness festers into '
-        'depression. The lesson crystallizes between ages 28 and 34, often through a property acquisition, a '
-        'family crisis, or the mother\'s health challenge that forces you to become the emotional backbone. '
-        'Mastery looks like a home that feels like a fortress, built with your own hands, where peace '
-        'exists because you maintained it through years of patient effort.'
+        'Saturn demands you build domestic peace through sustained effort rather than expecting it. '
+        'Take responsibility for the household and provide for your mother even if the relationship is strained. '
+        'When you comply, home becomes a genuine sanctuary built on your own dedication.'
     ),
     5: (
-        'Discipline in creativity, romance, and the domain of children. Saturn here requires that creative '
-        'expression be honed through craft and repetition rather than raw inspiration, and that parenthood be '
-        'approached as a solemn commitment. Practically, this means studying your creative form rigorously, '
-        'being a present and structured parent, and treating speculation with extreme caution. When you resist, '
-        'creative projects remain unfinished, romantic relationships feel heavy or joyless, children bring '
-        'worry rather than delight, and gambling or risky investments punish you. The lesson crystallizes '
-        'between ages 30 and 36, often through the birth of a child or a creative project that demands years '
-        'of disciplined work before it yields results. Mastery looks like a body of creative work that stands '
-        'the test of time, children who respect your steady presence, and a deep understanding that true joy '
-        'is earned through commitment.'
+        'Saturn requires creative discipline and serious commitment to parenthood. '
+        'Hone your craft through repetition, avoid risky speculation, and be a structured, present parent. '
+        'When you comply, creative work lasts and your children respect your steady presence.'
     ),
     6: (
-        'Discipline in health management, service to others, and the handling of conflict. Saturn here demands '
-        'a daily routine that prioritizes physical wellness and insists that you serve others as a path to '
-        'overcoming your own obstacles. Practically, this means regular medical check-ups, a structured diet '
-        'and exercise regimen, and approaching enemies and competitors with strategic patience rather than '
-        'aggression. When you resist, chronic illnesses develop, debts accumulate through negligence, and '
-        'enemies gain the upper hand because you underestimated them. The lesson crystallizes between ages '
-        '27 and 33, typically through a health diagnosis or a legal/work dispute that teaches you the cost '
-        'of ignoring your body and your obligations. Mastery looks like someone who has conquered chronic '
-        'health challenges through discipline, who defeats opponents simply by outlasting them, and who '
-        'finds deep meaning in service work.'
+        'Saturn demands a disciplined health routine and strategic patience with competitors. '
+        'Regular check-ups, structured diet, and treating service work as a duty are non-negotiable. '
+        'When you comply, you outlast opponents and chronic health issues come under control.'
     ),
     7: (
-        'Discipline in marriage, partnership, and all one-on-one relationships. Saturn here treats marriage '
-        'as a karmic contract that must be honored through patience, loyalty, and sustained effort rather than '
-        'passion or romantic idealism. Practically, this means committing fully once you commit, choosing a '
-        'partner for character over chemistry, and doing the unglamorous daily work that keeps a relationship '
-        'alive. When you resist, marriage is delayed, partnerships turn cold, and business alliances dissolve '
-        'because trust was never properly built. The lesson crystallizes between ages 30 and 35, often '
-        'through a marriage that feels harder than expected or a business partnership that tests your '
-        'integrity. Mastery looks like a long, enduring marriage that improves with each decade, built not '
-        'on romance but on mutual respect, shared duty, and the kind of trust that only time can create.'
+        'Saturn treats marriage as a long-term contract requiring loyalty and unglamorous daily effort. '
+        'Choose a partner for character over chemistry and commit fully. '
+        'When you comply, the marriage deepens with every decade into genuine mutual trust.'
     ),
     8: (
-        'Discipline through crisis, transformation, and confrontation with mortality. Saturn here demands that '
-        'you face life\'s upheavals, whether financial, physical, or psychological, without flinching or fleeing. '
-        'Practically, this means preparing for the unexpected through insurance, estate planning, and psychological '
-        'resilience, and approaching the occult or mystical with seriousness rather than escapism. When you '
-        'resist, sudden losses hit harder because you were unprepared, chronic illnesses linger because you '
-        'avoided the deeper cause, and inheritance or shared resource disputes become bitter and prolonged. '
-        'The lesson crystallizes between ages 33 and 39, often through a near-death experience, a major '
-        'financial restructuring, or a psychological crisis that strips away everything superficial. Mastery '
-        'looks like someone who has been through the fire and emerged with unshakable composure, deep '
-        'knowledge of life\'s hidden mechanics, and a relationship with death that is respectful rather '
-        'than fearful.'
+        'Saturn demands you prepare for life\'s upheavals through insurance, estate planning, and psychological resilience. '
+        'Face crises head-on rather than avoiding them. '
+        'When you comply, you emerge from each crisis with composure and deeper understanding.'
     ),
     9: (
-        'Discipline in faith, philosophy, and the pursuit of higher knowledge. Saturn here refuses to grant '
-        'fortune through luck or birth and insists that belief be built brick by brick through lived experience. '
-        'Practically, this means studying philosophy or dharma seriously rather than casually, earning your '
-        'father\'s respect through demonstrated merit, and accepting that spiritual understanding arrives late '
-        'but lasts forever. When you resist, the father relationship becomes a source of unresolved pain, '
-        'fortune feels permanently blocked, and you oscillate between blind faith and cynical atheism. The '
-        'lesson crystallizes between ages 30 and 36, often through a pilgrimage, a disillusionment with a '
-        'guru, or a father-related event that forces you to develop your own relationship with truth. '
-        'Mastery looks like hard-won wisdom that no one can shake, earned through decades of questioning and '
-        'direct experience, not borrowed from books or teachers.'
+        'Saturn refuses to grant fortune through luck and insists belief be earned through lived experience. '
+        'Study philosophy seriously and earn your father\'s respect through merit. '
+        'When you comply, you develop hard-won wisdom that no setback can shake.'
     ),
     10: (
-        'Discipline in career, public life, and the exercise of authority. Saturn is powerful here because '
-        'the 10th house is Saturn\'s natural domain, but the price is that authority must be earned through '
-        'decades of persistent, often thankless, labor. Practically, this means working in structured '
-        'environments like government, large corporations, or traditional industries, accepting hierarchy, '
-        'and building your reputation one project at a time. When you resist, career stagnation is severe, '
-        'bosses become obstacles, and public humiliation teaches through failure what discipline could have '
-        'prevented. The lesson crystallizes between ages 29 and 36 during the Saturn return, when either '
-        'a major promotion or a career collapse defines the next chapter. Mastery looks like someone who '
-        'rose to the top of their field through sheer persistence, whose authority is unquestioned because '
-        'it was earned in full public view over many years.'
+        'Saturn demands career authority be earned through decades of persistent, often thankless work. '
+        'Accept hierarchy, build your reputation one project at a time, and avoid shortcuts. '
+        'When you comply, your professional authority becomes unquestionable because everyone watched you earn it.'
     ),
     11: (
-        'Discipline in managing desires, social networks, and the flow of income. Saturn here teaches that '
-        'not every desire deserves fulfillment and that gains come with proportional responsibility. '
-        'Practically, this means building a professional network through genuine service rather than '
-        'social climbing, treating income as a tool rather than a trophy, and accepting that the largest '
-        'gains arrive after middle age. When you resist, friendships disappoint because they were built on '
-        'convenience, income stalls because you expected more than you gave, and elder siblings become a '
-        'source of karmic friction. The lesson crystallizes between ages 33 and 40, often through a '
-        'financial milestone or a network opportunity that rewards years of patient relationship-building. '
-        'Mastery looks like steady, growing income from multiple sources, a small but utterly reliable '
-        'circle of friends, and the quiet satisfaction of fulfilled aspirations that were worth the wait.'
+        'Saturn teaches that gains come with proportional responsibility and not every desire deserves fulfillment. '
+        'Build your network through genuine service rather than convenience. '
+        'When you comply, steady income and a small but reliable circle of friends arrive after middle age.'
     ),
     12: (
-        'Discipline in solitude, spiritual practice, and the art of letting go. Saturn here demands that '
-        'you treat isolation not as punishment but as sacred preparation, and that expenditures of energy, '
-        'money, and emotion be managed with awareness. Practically, this means developing a consistent '
-        'meditation or contemplative practice, accepting periods of withdrawal from public life, and '
-        'approaching foreign travel or residence with patience rather than escapism. When you resist, '
-        'expenses spiral out of control, sleep disorders and anxiety take hold, and foreign lands bring '
-        'suffering instead of liberation. The lesson crystallizes between ages 30 and 36, often through '
-        'a period of forced isolation, a hospitalization, or a spiritual retreat that permanently shifts '
-        'your relationship with solitude. Mastery looks like someone who has found genuine peace in '
-        'their own company, whose spiritual practice is built on discipline rather than mood, and who '
-        'can release attachments with grace when the time comes.'
+        'Saturn demands you treat solitude as preparation, not punishment, and manage expenses with awareness. '
+        'Develop a consistent contemplative practice and approach foreign travel with patience. '
+        'When you comply, you find genuine peace in your own company and can let go of attachments gracefully.'
     ),
 }
 
@@ -3484,6 +3250,1222 @@ def get_daily_rituals(chart):
 
 
 # ════════════════════════════════════════════════════════════════
+# SECTION 10: LUCKY POINTS
+# ════════════════════════════════════════════════════════════════
+
+_PLANET_NUMEROLOGY = {
+    'Sun': 1, 'Moon': 2, 'Mars': 9, 'Mercury': 5,
+    'Jupiter': 3, 'Venus': 6, 'Saturn': 8, 'Rahu': 4, 'Ketu': 7,
+}
+
+_PLANET_DAY_MAP = {
+    'Sun': 'Sunday', 'Moon': 'Monday', 'Mars': 'Tuesday',
+    'Mercury': 'Wednesday', 'Jupiter': 'Thursday', 'Venus': 'Friday',
+    'Saturn': 'Saturday', 'Rahu': 'Saturday', 'Ketu': 'Tuesday',
+}
+
+_PLANET_METAL = {
+    'Sun': 'Gold or Copper', 'Moon': 'Silver', 'Mars': 'Copper',
+    'Mercury': 'Bronze', 'Jupiter': 'Gold', 'Venus': 'Silver or Platinum',
+    'Saturn': 'Iron', 'Rahu': 'Lead or Ashtadhatu', 'Ketu': 'Iron or mixed metals',
+}
+
+# Functional benefics/malefics per ascendant (kendra/trikona lords vs dusthana lords)
+_FUNCTIONAL_BENEFICS = {
+    'Aries': ['Sun', 'Mars', 'Jupiter'],
+    'Taurus': ['Venus', 'Saturn', 'Mercury'],
+    'Gemini': ['Mercury', 'Venus', 'Saturn'],
+    'Cancer': ['Moon', 'Mars', 'Jupiter'],
+    'Leo': ['Sun', 'Mars', 'Jupiter'],
+    'Virgo': ['Mercury', 'Venus'],
+    'Libra': ['Venus', 'Saturn', 'Mercury'],
+    'Scorpio': ['Mars', 'Moon', 'Jupiter'],
+    'Sagittarius': ['Jupiter', 'Sun', 'Mars'],
+    'Capricorn': ['Saturn', 'Venus', 'Mercury'],
+    'Aquarius': ['Saturn', 'Venus'],
+    'Pisces': ['Jupiter', 'Moon', 'Mars'],
+}
+
+_FUNCTIONAL_MALEFICS = {
+    'Aries': ['Mercury', 'Rahu', 'Ketu'],
+    'Taurus': ['Mars', 'Jupiter', 'Rahu', 'Ketu'],
+    'Gemini': ['Mars', 'Rahu', 'Ketu'],
+    'Cancer': ['Saturn', 'Rahu', 'Ketu'],
+    'Leo': ['Saturn', 'Rahu', 'Ketu'],
+    'Virgo': ['Mars', 'Moon', 'Rahu', 'Ketu'],
+    'Libra': ['Sun', 'Jupiter', 'Rahu', 'Ketu'],
+    'Scorpio': ['Mercury', 'Venus', 'Rahu', 'Ketu'],
+    'Sagittarius': ['Venus', 'Rahu', 'Ketu'],
+    'Capricorn': ['Mars', 'Moon', 'Jupiter', 'Rahu', 'Ketu'],
+    'Aquarius': ['Moon', 'Mars', 'Jupiter', 'Rahu', 'Ketu'],
+    'Pisces': ['Sun', 'Saturn', 'Venus', 'Mercury', 'Rahu', 'Ketu'],
+}
+
+
+def get_lucky_points(chart):
+    """Calculate lucky numbers, days, stones, metals, colors, and more."""
+    asc_sign = chart['ascendant']['sign']
+    asc_lord = chart['ascendant']['lord']
+    moon_sign = chart['planets']['Moon']['sign']
+    moon_lord = SIGN_LORDS.get(moon_sign, 'Moon')
+
+    # Lucky number from ascendant lord
+    lucky_number = _PLANET_NUMEROLOGY.get(asc_lord, 1)
+
+    # Good numbers: ascendant lord + moon sign lord
+    asc_num = _PLANET_NUMEROLOGY.get(asc_lord, 1)
+    moon_num = _PLANET_NUMEROLOGY.get(moon_lord, 2)
+    good_numbers = sorted(set([asc_num, moon_num]))
+
+    # Evil numbers: enemy planets of ascendant lord
+    enemies = NATURAL_ENEMIES.get(asc_lord, [])
+    evil_numbers = sorted(set(_PLANET_NUMEROLOGY.get(e, 0) for e in enemies))
+
+    # Lucky days: ascendant lord's day + friends' days
+    friends = NATURAL_FRIENDS.get(asc_lord, [])
+    lucky_days = [_PLANET_DAY_MAP.get(asc_lord, 'Sunday')]
+    for f in friends:
+        day = _PLANET_DAY_MAP.get(f, '')
+        if day and day not in lucky_days:
+            lucky_days.append(day)
+
+    # Lucky stone from _PLANET_REMEDIES
+    lucky_stone = _PLANET_REMEDIES.get(asc_lord, {}).get('gemstone', 'Consult astrologer')
+
+    # Lucky metal
+    lucky_metal = _PLANET_METAL.get(asc_lord, 'Mixed metals')
+
+    # Lucky color
+    lucky_color = _PLANET_REMEDIES.get(asc_lord, {}).get('color', 'White')
+
+    # Good and bad planets (functional)
+    good_planets = _FUNCTIONAL_BENEFICS.get(asc_sign, [])
+    bad_planets = _FUNCTIONAL_MALEFICS.get(asc_sign, [])
+
+    # Friendly signs: signs owned by friends of ascendant lord
+    friendly_signs = []
+    for f in friends:
+        for s in PLANET_OWNS.get(f, []):
+            if s not in friendly_signs:
+                friendly_signs.append(s)
+
+    # Good years: ages that are multiples or harmonics of lucky number
+    good_years = []
+    age = lucky_number
+    while age <= 90:
+        good_years.append(age)
+        age += lucky_number
+    # Add single-digit harmonics (digit sum = lucky number)
+    for a in range(10, 91):
+        digit_sum = sum(int(d) for d in str(a))
+        while digit_sum >= 10:
+            digit_sum = sum(int(d) for d in str(digit_sum))
+        if digit_sum == lucky_number and a not in good_years:
+            good_years.append(a)
+    good_years = sorted(good_years)
+
+    return {
+        'lucky_number': lucky_number,
+        'good_numbers': good_numbers,
+        'evil_numbers': evil_numbers,
+        'lucky_days': lucky_days,
+        'lucky_stone': lucky_stone,
+        'lucky_metal': lucky_metal,
+        'lucky_color': lucky_color,
+        'good_planets': good_planets,
+        'bad_planets': bad_planets,
+        'friendly_signs': friendly_signs,
+        'good_years': good_years,
+    }
+
+
+# ════════════════════════════════════════════════════════════════
+# SECTION 11: SADE SATI REPORT
+# ════════════════════════════════════════════════════════════════
+
+# Saturn sign entry dates (approximate)
+_SATURN_TRANSITS = [
+    ('Aquarius',     2020, 1, 2022, 4),
+    ('Pisces',       2022, 4, 2025, 3),
+    ('Aries',        2025, 4, 2027, 6),
+    ('Taurus',       2027, 6, 2029, 8),
+    ('Gemini',       2029, 8, 2031, 10),
+    ('Cancer',       2031, 10, 2033, 12),
+    ('Leo',          2033, 12, 2036, 2),
+    ('Virgo',        2036, 2, 2038, 4),
+    ('Libra',        2038, 4, 2040, 6),
+    ('Scorpio',      2040, 6, 2042, 8),
+    ('Sagittarius',  2042, 8, 2044, 10),
+    ('Capricorn',    2044, 10, 2046, 12),
+    ('Aquarius',     2046, 12, 2049, 2),
+    ('Pisces',       2049, 2, 2051, 4),
+]
+
+_SADE_SATI_PHASE_DESC = {
+    'Rising': (
+        "Saturn transits the 12th house from your Moon, marking the beginning of Sade Sati. "
+        "You may face unexpected expenses, feel isolated from your usual support network, or deal with "
+        "hidden adversaries working against you. Sleep disturbances and a restless mind are common. "
+        "Foreign travel or relocation possibilities increase during this phase."
+    ),
+    'Peak': (
+        "Saturn sits directly on your natal Moon, bringing the most intense phase of Sade Sati. "
+        "Mental pressure, self-doubt, and emotional heaviness dominate. Your reputation may face challenges, "
+        "health issues related to stress or chronic conditions surface. Relationships with mother or "
+        "maternal figures come under strain. This is the period of deepest karmic reckoning."
+    ),
+    'Setting': (
+        "Saturn transits the 2nd house from your Moon in the final phase. "
+        "Financial pressures intensify, family disputes may arise, and your speech can get you into trouble. "
+        "Savings built over years may deplete. Diet-related health issues or problems with teeth, eyes, "
+        "or face are possible. The silver lining: this phase also builds financial discipline that lasts decades."
+    ),
+}
+
+_SMALL_PANOTI_DESC = {
+    '4th_from_moon': (
+        "Saturn transits the 4th house from your Moon (Small Panoti / Dhaiya). "
+        "Domestic peace gets disrupted. Property matters stall or create disputes. Your mother's health "
+        "may need attention. Vehicles and home comforts suffer setbacks. Mental peace is hard to find, "
+        "but hard work on the career front can still produce results."
+    ),
+    '8th_from_moon': (
+        "Saturn transits the 8th house from your Moon (Small Panoti / Dhaiya). "
+        "Sudden obstacles, health scares, or accidents become possible. Hidden matters surface. "
+        "Joint finances or inheritance matters create complications. This is a period of forced "
+        "transformation. Spiritual practices and health precautions are essential."
+    ),
+}
+
+
+def _build_saturn_timeline(birth_year):
+    """Build a complete Saturn transit timeline covering the person's life."""
+    CYCLE = 29.5  # years per Saturn cycle
+    timeline = []
+
+    # Start from the earliest provided transit data and extend backward/forward
+    for sign, sy, sm, ey, em in _SATURN_TRANSITS:
+        # Add this transit directly
+        timeline.append((sign, sy, sm, ey, em))
+        # Extend backward in ~29.5 year steps
+        offset = CYCLE
+        while sy - offset >= birth_year - 5:
+            back_sy = round(sy - offset)
+            back_sm = sm
+            back_ey = round(ey - offset)
+            back_em = em
+            timeline.append((sign, back_sy, back_sm, back_ey, back_em))
+            offset += CYCLE
+        # Extend forward
+        offset = CYCLE
+        while sy + offset <= birth_year + 100:
+            fwd_sy = round(sy + offset)
+            fwd_sm = sm
+            fwd_ey = round(ey + offset)
+            fwd_em = em
+            timeline.append((sign, fwd_sy, fwd_sm, fwd_ey, fwd_em))
+            offset += CYCLE
+
+    # Sort by start year then month
+    timeline.sort(key=lambda x: (x[1], x[2]))
+    return timeline
+
+
+def get_sade_sati(chart):
+    """Calculate all Sade Sati and Small Panoti periods for the person's lifetime."""
+    moon_sign = chart['planets']['Moon']['sign']
+    moon_idx = chart['planets']['Moon']['sign_idx']
+    birth_year = chart['birth']['year']
+
+    # Signs that trigger Sade Sati phases (12th, 1st, 2nd from Moon)
+    rising_idx = (moon_idx - 1) % 12   # 12th from Moon
+    peak_idx = moon_idx                 # Moon sign itself
+    setting_idx = (moon_idx + 1) % 12   # 2nd from Moon
+
+    # Signs that trigger Small Panoti (4th and 8th from Moon)
+    fourth_idx = (moon_idx + 3) % 12
+    eighth_idx = (moon_idx + 7) % 12
+
+    rising_sign = SIGNS[rising_idx]
+    peak_sign = SIGNS[peak_idx]
+    setting_sign = SIGNS[setting_idx]
+    fourth_sign = SIGNS[fourth_idx]
+    eighth_sign = SIGNS[eighth_idx]
+
+    timeline = _build_saturn_timeline(birth_year)
+    today = datetime.now()
+
+    periods = []
+    current_status = 'Free from Sade Sati and Small Panoti'
+
+    for sign, sy, sm, ey, em in timeline:
+        start_date = f'{sy}-{sm:02d}'
+        end_date = f'{ey}-{em:02d}'
+
+        # Skip periods entirely before birth
+        if ey < birth_year:
+            continue
+        # Cap at reasonable future
+        if sy > birth_year + 100:
+            continue
+
+        entry = None
+
+        if sign == rising_sign:
+            entry = {
+                'type': 'Sade Sati',
+                'phase': 'Rising',
+                'saturn_sign': sign,
+                'start': start_date,
+                'end': end_date,
+                'description': _SADE_SATI_PHASE_DESC['Rising'],
+            }
+        elif sign == peak_sign:
+            entry = {
+                'type': 'Sade Sati',
+                'phase': 'Peak',
+                'saturn_sign': sign,
+                'start': start_date,
+                'end': end_date,
+                'description': _SADE_SATI_PHASE_DESC['Peak'],
+            }
+        elif sign == setting_sign:
+            entry = {
+                'type': 'Sade Sati',
+                'phase': 'Setting',
+                'saturn_sign': sign,
+                'start': start_date,
+                'end': end_date,
+                'description': _SADE_SATI_PHASE_DESC['Setting'],
+            }
+        elif sign == fourth_sign:
+            entry = {
+                'type': 'Small Panoti',
+                'phase': '4th from Moon',
+                'saturn_sign': sign,
+                'start': start_date,
+                'end': end_date,
+                'description': _SMALL_PANOTI_DESC['4th_from_moon'],
+            }
+        elif sign == eighth_sign:
+            entry = {
+                'type': 'Small Panoti',
+                'phase': '8th from Moon',
+                'saturn_sign': sign,
+                'start': start_date,
+                'end': end_date,
+                'description': _SMALL_PANOTI_DESC['8th_from_moon'],
+            }
+
+        if entry:
+            periods.append(entry)
+            # Check current status
+            start_dt = datetime(sy, sm, 1)
+            end_dt = datetime(ey, em, 1)
+            if start_dt <= today <= end_dt:
+                if entry['type'] == 'Sade Sati':
+                    current_status = f"Currently in Sade Sati ({entry['phase']} phase) with Saturn in {sign}"
+                else:
+                    current_status = f"Currently in Small Panoti ({entry['phase']}) with Saturn in {sign}"
+
+    # Check if about to enter (within next 2 years)
+    if 'Currently' not in current_status:
+        for p in periods:
+            try:
+                ps_year, ps_month = map(int, p['start'].split('-'))
+                p_start = datetime(ps_year, ps_month, 1)
+                if today < p_start <= today + timedelta(days=730):
+                    months_away = (ps_year - today.year) * 12 + (ps_month - today.month)
+                    current_status = (
+                        f"Free now, but {p['type']} ({p['phase']}) begins in approximately "
+                        f"{months_away} months ({p['start']})"
+                    )
+                    break
+            except (ValueError, TypeError):
+                continue
+
+    return {
+        'moon_sign': moon_sign,
+        'periods': periods,
+        'current_status': current_status,
+        'total_sade_sati_periods': len([p for p in periods if p['type'] == 'Sade Sati']),
+        'total_small_panoti_periods': len([p for p in periods if p['type'] == 'Small Panoti']),
+    }
+
+
+# ════════════════════════════════════════════════════════════════
+# SECTION 12: AVKAHADA CHAKRA
+# ════════════════════════════════════════════════════════════════
+
+_VARNA_MAP = {
+    'Cancer': 'Brahmin', 'Scorpio': 'Brahmin', 'Pisces': 'Brahmin',
+    'Aries': 'Kshatriya', 'Leo': 'Kshatriya', 'Sagittarius': 'Kshatriya',
+    'Taurus': 'Vaishya', 'Virgo': 'Vaishya', 'Capricorn': 'Vaishya',
+    'Gemini': 'Shudra', 'Libra': 'Shudra', 'Aquarius': 'Shudra',
+}
+
+_VARNA_DESC = {
+    'Brahmin': (
+        "Your Moon falls in a Brahmin varna sign, indicating a soul oriented toward knowledge, "
+        "teaching, and spiritual pursuits. You are naturally drawn to learning, advisory roles, and "
+        "intellectual leadership. Priestly, scholarly, or counseling professions suit your inner nature."
+    ),
+    'Kshatriya': (
+        "Your Moon falls in a Kshatriya varna sign, pointing to a warrior spirit and leadership drive. "
+        "You thrive in positions of authority, protective roles, and competitive environments. "
+        "Administration, defense, entrepreneurship, and governance align with your core energy."
+    ),
+    'Vaishya': (
+        "Your Moon falls in a Vaishya varna sign, showing a strong commercial instinct and practical "
+        "intelligence. You excel in trade, finance, agriculture, and business management. Building "
+        "wealth through sustained effort and smart resource allocation is your natural path."
+    ),
+    'Shudra': (
+        "Your Moon falls in a Shudra varna sign, reflecting skill with hands, service orientation, "
+        "and craftsmanship. You find fulfillment in artisanal work, technical fields, healthcare, "
+        "or any profession where tangible results matter more than abstract theory."
+    ),
+}
+
+_YONI_MAP = {
+    'Ashwini': 'Horse', 'Bharani': 'Elephant', 'Krittika': 'Sheep',
+    'Rohini': 'Serpent', 'Mrigashira': 'Serpent', 'Ardra': 'Dog',
+    'Punarvasu': 'Cat', 'Pushya': 'Sheep', 'Ashlesha': 'Cat',
+    'Magha': 'Rat', 'Purva Phalguni': 'Rat', 'Uttara Phalguni': 'Cow',
+    'Hasta': 'Buffalo', 'Chitra': 'Tiger', 'Swati': 'Buffalo',
+    'Vishakha': 'Tiger', 'Anuradha': 'Deer', 'Jyeshtha': 'Deer',
+    'Mula': 'Dog', 'Purva Ashadha': 'Monkey', 'Uttara Ashadha': 'Mongoose',
+    'Shravana': 'Monkey', 'Dhanishtha': 'Lion', 'Shatabhisha': 'Horse',
+    'Purva Bhadrapada': 'Lion', 'Uttara Bhadrapada': 'Cow', 'Revati': 'Elephant',
+}
+
+_YONI_DESC = {
+    'Horse': 'Your yoni is Horse, suggesting speed, restlessness, and a love for freedom. You need space in relationships and dislike being confined to routines.',
+    'Elephant': 'Your yoni is Elephant, indicating dignity, patience, and tremendous inner strength. You move slowly but your decisions carry weight and permanence.',
+    'Sheep': 'Your yoni is Sheep, reflecting a gentle, community-oriented nature. You prefer harmony over conflict and do best in supportive, nurturing environments.',
+    'Serpent': 'Your yoni is Serpent, pointing to deep intuition, secretive tendencies, and magnetic charm. You read people well and rarely reveal your full hand.',
+    'Dog': 'Your yoni is Dog, showing fierce loyalty, protective instincts, and sharp alertness. You guard your loved ones with everything you have.',
+    'Cat': 'Your yoni is Cat, indicating independence, sensuality, and quiet observation. You are selective in your associations and value personal comfort highly.',
+    'Rat': 'Your yoni is Rat, reflecting resourcefulness, adaptability, and accumulative instinct. You can thrive in lean conditions and always find a way forward.',
+    'Cow': 'Your yoni is Cow, suggesting nourishing energy, patience, and a giving nature. Others naturally turn to you for sustenance and support.',
+    'Buffalo': 'Your yoni is Buffalo, indicating endurance, hard work, and a powerful but slow-building temperament. You outlast competitors through sheer persistence.',
+    'Tiger': 'Your yoni is Tiger, pointing to raw courage, dominance, and a commanding presence. You naturally take the lead and others instinctively defer to you.',
+    'Deer': 'Your yoni is Deer, reflecting grace, sensitivity, and a somewhat timid outer shell. You move through life with elegance but startle easily under pressure.',
+    'Monkey': 'Your yoni is Monkey, showing cleverness, playfulness, and quick thinking. You adapt to any social situation and use humor as both shield and weapon.',
+    'Mongoose': 'Your yoni is Mongoose, indicating combative intelligence and a sharp, reactive mind. You strike decisively when threatened and rarely back down from confrontation.',
+    'Lion': 'Your yoni is Lion, reflecting authority, pride, and a regal bearing. You expect respect as a default and carry yourself with natural dignity.',
+}
+
+_GANA_MAP = {
+    'Ashwini': 'Deva', 'Mrigashira': 'Deva', 'Punarvasu': 'Deva',
+    'Pushya': 'Deva', 'Hasta': 'Deva', 'Swati': 'Deva',
+    'Anuradha': 'Deva', 'Shravana': 'Deva', 'Revati': 'Deva',
+    'Bharani': 'Manushya', 'Rohini': 'Manushya', 'Ardra': 'Manushya',
+    'Purva Phalguni': 'Manushya', 'Uttara Phalguni': 'Manushya',
+    'Purva Ashadha': 'Manushya', 'Uttara Ashadha': 'Manushya',
+    'Purva Bhadrapada': 'Manushya', 'Uttara Bhadrapada': 'Manushya',
+    'Krittika': 'Rakshasa', 'Ashlesha': 'Rakshasa', 'Magha': 'Rakshasa',
+    'Chitra': 'Rakshasa', 'Vishakha': 'Rakshasa', 'Jyeshtha': 'Rakshasa',
+    'Mula': 'Rakshasa', 'Dhanishtha': 'Rakshasa', 'Shatabhisha': 'Rakshasa',
+}
+
+_GANA_DESC = {
+    'Deva': (
+        "Your gana is Deva (divine temperament). You are naturally inclined toward dharma, fairness, "
+        "and constructive action. Others perceive you as approachable and well-intentioned. You prefer "
+        "to resolve conflicts through dialogue rather than force."
+    ),
+    'Manushya': (
+        "Your gana is Manushya (human temperament). You operate from a balanced mix of ambition and "
+        "compassion. You understand worldly affairs deeply and navigate social structures skillfully. "
+        "You weigh pros and cons before acting and rarely make purely emotional decisions."
+    ),
+    'Rakshasa': (
+        "Your gana is Rakshasa (fierce temperament). You possess intense willpower, unyielding "
+        "determination, and a no-nonsense attitude. You are not cruel by nature, but you refuse to "
+        "tolerate injustice or deception. Your intensity can be intimidating but is ultimately protective."
+    ),
+}
+
+_VASYA_MAP = {
+    'Aries': 'Quadruped', 'Taurus': 'Quadruped', 'Gemini': 'Biped',
+    'Cancer': 'Insect', 'Leo': 'Quadruped', 'Virgo': 'Biped',
+    'Libra': 'Biped', 'Scorpio': 'Insect', 'Sagittarius': 'Biped (front half)',
+    'Capricorn': 'Quadruped (front half)', 'Aquarius': 'Biped', 'Pisces': 'Water',
+}
+
+_NADI_MAP = {
+    'Ashwini': 'Aadi', 'Ardra': 'Aadi', 'Punarvasu': 'Aadi',
+    'Uttara Phalguni': 'Aadi', 'Hasta': 'Aadi', 'Jyeshtha': 'Aadi',
+    'Mula': 'Aadi', 'Shatabhisha': 'Aadi', 'Purva Bhadrapada': 'Aadi',
+    'Bharani': 'Madhya', 'Mrigashira': 'Madhya', 'Pushya': 'Madhya',
+    'Purva Phalguni': 'Madhya', 'Chitra': 'Madhya', 'Anuradha': 'Madhya',
+    'Purva Ashadha': 'Madhya', 'Dhanishtha': 'Madhya', 'Uttara Bhadrapada': 'Madhya',
+    'Krittika': 'Antya', 'Rohini': 'Antya', 'Ashlesha': 'Antya',
+    'Magha': 'Antya', 'Swati': 'Antya', 'Vishakha': 'Antya',
+    'Uttara Ashadha': 'Antya', 'Shravana': 'Antya', 'Revati': 'Antya',
+}
+
+_NADI_DESC = {
+    'Aadi': (
+        "Your nadi is Aadi (Vata constitution). You tend toward a lighter frame, active mind, and "
+        "variable energy levels. Wind-related health issues like joint pain, gas, anxiety, and "
+        "irregular digestion need attention. Regular routine and warm, grounding foods help you most."
+    ),
+    'Madhya': (
+        "Your nadi is Madhya (Pitta constitution). You have strong digestion, sharp intellect, and "
+        "a medium build. Heat-related issues like acidity, inflammation, skin rashes, and anger "
+        "outbursts are your vulnerabilities. Cooling foods and avoiding excess spice serve you well."
+    ),
+    'Antya': (
+        "Your nadi is Antya (Kapha constitution). You tend toward a sturdy frame, steady energy, and "
+        "calm temperament. Water-retention, sinus issues, lethargy, and weight gain are your weak "
+        "points. Regular exercise and light, warm meals keep you in balance."
+    ),
+}
+
+_TATVA_MAP = {
+    'Aries': 'Fire', 'Leo': 'Fire', 'Sagittarius': 'Fire',
+    'Taurus': 'Earth', 'Virgo': 'Earth', 'Capricorn': 'Earth',
+    'Gemini': 'Air', 'Libra': 'Air', 'Aquarius': 'Air',
+    'Cancer': 'Water', 'Scorpio': 'Water', 'Pisces': 'Water',
+}
+
+_TATVA_DESC = {
+    'Fire': (
+        "Your Moon's tatva is Fire. You are driven by action, initiative, and a need to lead. "
+        "You process emotions quickly and move on. Anger is your primary emotional vulnerability, "
+        "but it also fuels your greatest achievements."
+    ),
+    'Earth': (
+        "Your Moon's tatva is Earth. You are grounded, practical, and security-conscious. "
+        "You process emotions slowly but deeply. Material stability is essential for your peace of mind, "
+        "and you build lasting structures in every area of life."
+    ),
+    'Air': (
+        "Your Moon's tatva is Air. You are intellectually oriented, socially active, and mentally restless. "
+        "You process emotions through analysis and conversation. Overthinking is your trap, "
+        "but your ability to see multiple perspectives is your greatest asset."
+    ),
+    'Water': (
+        "Your Moon's tatva is Water. You are emotionally deep, intuitive, and sensitive to atmospheres. "
+        "You absorb the feelings of those around you. Emotional boundaries are essential for your "
+        "wellbeing, but your empathy makes you a natural healer and counselor."
+    ),
+}
+
+_PAYA_MAP = {1: 'Gold', 2: 'Silver', 3: 'Copper', 4: 'Iron'}
+
+_PAYA_DESC = {
+    'Gold': (
+        "Your paya is Gold (Swarna), the most auspicious. The nakshatra's first pada bestows "
+        "prosperity, recognition, and a fortunate start in life. Authority figures and institutions "
+        "tend to favor you naturally."
+    ),
+    'Silver': (
+        "Your paya is Silver (Rajat), indicating comfort, emotional richness, and artistic sensibility. "
+        "You attract wealth through relationships and social connections rather than brute force."
+    ),
+    'Copper': (
+        "Your paya is Copper (Tamra), suggesting a life of mixed results that improves with persistent "
+        "effort. Early struggles give way to hard-earned success. Your resilience is your defining trait."
+    ),
+    'Iron': (
+        "Your paya is Iron (Loha), indicating a tough, demanding life path that forges extraordinary "
+        "strength. You face more obstacles than average but develop an unbreakable will. Late-life "
+        "success is your signature pattern."
+    ),
+}
+
+
+def get_avkahada_chakra(chart):
+    """Calculate Avkahada Chakra elements from Moon sign and nakshatra."""
+    moon_sign = chart['planets']['Moon']['sign']
+    moon_nak = chart['planets']['Moon']['nakshatra']
+    moon_pada = chart['planets']['Moon']['pada']
+
+    varna = _VARNA_MAP.get(moon_sign, 'Vaishya')
+    yoni = _YONI_MAP.get(moon_nak, 'Horse')
+    gana = _GANA_MAP.get(moon_nak, 'Manushya')
+    vasya = _VASYA_MAP.get(moon_sign, 'Biped')
+    nadi = _NADI_MAP.get(moon_nak, 'Madhya')
+    paya = _PAYA_MAP.get(moon_pada, 'Silver')
+    tatva = _TATVA_MAP.get(moon_sign, 'Earth')
+
+    return {
+        'varna': varna,
+        'varna_description': _VARNA_DESC.get(varna, ''),
+        'yoni': yoni,
+        'yoni_description': _YONI_DESC.get(yoni, ''),
+        'gana': gana,
+        'gana_description': _GANA_DESC.get(gana, ''),
+        'vasya': vasya,
+        'nadi': nadi,
+        'nadi_description': _NADI_DESC.get(nadi, ''),
+        'paya': paya,
+        'paya_description': _PAYA_DESC.get(paya, ''),
+        'tatva': tatva,
+        'tatva_description': _TATVA_DESC.get(tatva, ''),
+        'moon_sign': moon_sign,
+        'moon_nakshatra': moon_nak,
+        'moon_pada': moon_pada,
+    }
+
+
+# ════════════════════════════════════════════════════════════════
+# SECTION 13: NAKSHATRA PHAL (MOON NAKSHATRA READING)
+# ════════════════════════════════════════════════════════════════
+
+_NAKSHATRA_PHAL = {
+    'Ashwini': {
+        'personality': (
+            "You are quick-witted, impatient, and always in motion. Sitting idle makes you restless. "
+            "You have a natural healing ability and an instinct to fix what is broken, whether it is "
+            "a machine, a person, or a situation. Your decisions come fast, sometimes too fast. "
+            "You are brave to the point of recklessness and deeply dislike taking orders from anyone."
+        ),
+        'education_income': (
+            "You do well in medicine, sports, veterinary science, or any field requiring quick reflexes. "
+            "Early career may involve frequent job changes before you find your niche. "
+            "Income rises sharply after your late twenties once you commit to one direction."
+        ),
+        'family_life': (
+            "You are fiercely protective of your family but can be emotionally unavailable due to "
+            "constant activity. Marriage works best with a partner who values independence. "
+            "You tend to marry someone from a different background than your own."
+        ),
+        'health': (
+            "Head injuries, migraines, and accidents from speed or sports are your main risks. "
+            "Your metabolism is fast, and you recover quickly from illness but burn out just as fast."
+        ),
+        'best_years': [17, 26, 28, 33, 40, 44],
+    },
+    'Bharani': {
+        'personality': (
+            "You carry a heavy sense of responsibility from a young age. Life teaches you about "
+            "transformation, endings, and rebirth earlier than most. You have strong willpower and "
+            "can endure situations that would break others. Your moral code is personal, not borrowed "
+            "from society. You are intensely private about your inner world."
+        ),
+        'education_income': (
+            "You thrive in law, finance, research, psychology, or anything involving investigation. "
+            "Your income pattern is feast-or-famine in early years but stabilizes by your mid-thirties. "
+            "You have a talent for managing other people's resources."
+        ),
+        'family_life': (
+            "Relationships are intense and all-consuming for you. You demand deep loyalty and give the "
+            "same in return. Family dynamics often involve power struggles. "
+            "Your children become a source of profound transformation in your life."
+        ),
+        'health': (
+            "Reproductive health, diabetes, and issues related to the lower abdomen need attention. "
+            "You tend to suppress illness until it becomes serious. Regular checkups are not optional for you."
+        ),
+        'best_years': [20, 24, 33, 36, 42, 50],
+    },
+    'Krittika': {
+        'personality': (
+            "You have a sharp, cutting intellect and zero tolerance for dishonesty. Your words can "
+            "burn, and you know it. You are fiercely independent, self-made, and proud of earning "
+            "everything yourself. Authority comes naturally to you, but so does a tendency to be "
+            "critical. You set impossibly high standards for yourself and everyone around you."
+        ),
+        'education_income': (
+            "Military, engineering, surgery, cooking, or fire-related industries suit you. "
+            "You earn through skill and expertise rather than connections. "
+            "Your career takes a decisive upward turn in your early thirties."
+        ),
+        'family_life': (
+            "You can be domineering at home without realizing it. Your partner needs thick skin "
+            "and genuine respect for your capabilities. Family meals and shared routines "
+            "are the glue that holds your domestic life together."
+        ),
+        'health': (
+            "Acidity, fevers, inflammatory conditions, and issues with the neck and throat are common. "
+            "You run hot both physically and emotionally."
+        ),
+        'best_years': [18, 25, 27, 35, 41, 48],
+    },
+    'Rohini': {
+        'personality': (
+            "You are magnetic, attractive, and have a natural gift for making others feel comfortable. "
+            "Material beauty and sensory pleasure matter deeply to you. You are possessive about people "
+            "and things you consider yours. Your creative eye is exceptional. "
+            "You can be stubborn beyond reason when you have decided on something."
+        ),
+        'education_income': (
+            "Fashion, agriculture, food industry, beauty, real estate, or the arts suit you best. "
+            "You attract wealth naturally but must guard against overspending on luxuries. "
+            "Your peak earning years start around 32 and continue strongly into your fifties."
+        ),
+        'family_life': (
+            "You crave a beautiful home and a devoted partner. Jealousy and possessiveness can "
+            "strain your marriage if unchecked. You are an indulgent parent who spoils children "
+            "with affection and material comfort."
+        ),
+        'health': (
+            "Throat issues, thyroid problems, and weight gain from overindulgence are your vulnerabilities. "
+            "You benefit immensely from portion control and regular walks in nature."
+        ),
+        'best_years': [22, 25, 31, 38, 44, 51],
+    },
+    'Mrigashira': {
+        'personality': (
+            "You are perpetually curious, always searching for the next interesting thing. Your mind "
+            "jumps between topics at dizzying speed. You have a gentle exterior but a restless core. "
+            "You ask questions others never think of. Commitment to one path is your biggest challenge. "
+            "You are naturally charming and witty in conversation."
+        ),
+        'education_income': (
+            "Research, writing, journalism, travel industry, textiles, or sales suit your nature. "
+            "You may have two income sources simultaneously. Your career path has more lateral moves "
+            "than vertical climbs, but each move broadens your expertise significantly."
+        ),
+        'family_life': (
+            "You need a partner who stimulates your mind. Boredom is the real enemy of your relationships. "
+            "You are a fun, engaging parent but may struggle with the monotony of daily parenting routines. "
+            "Extended family relationships are generally positive."
+        ),
+        'health': (
+            "Nervous exhaustion, allergies, and upper respiratory issues are your weak spots. "
+            "Your health improves dramatically when you reduce mental overstimulation and sleep on time."
+        ),
+        'best_years': [21, 27, 32, 36, 44, 50],
+    },
+    'Ardra': {
+        'personality': (
+            "You have experienced suffering or upheaval early in life, and it has made you sharper. "
+            "You are analytical, sometimes cynical, but always honest. Your emotional storms can be "
+            "intense, but you transform pain into power better than most. You have a dark sense of humor "
+            "and a deep capacity for empathy born from your own struggles."
+        ),
+        'education_income': (
+            "Technology, electronics, research, pharmaceuticals, or storm/disaster management suit you. "
+            "Your career often involves a major disruption or restart around age 30. "
+            "Post-disruption, your earning capacity multiplies."
+        ),
+        'family_life': (
+            "Relationships require you to manage your emotional intensity. You form deep bonds but "
+            "can push people away during your storm phases. Marriage stability improves significantly "
+            "after your Saturn return. Your loyalty, once given, is permanent."
+        ),
+        'health': (
+            "Asthma, mental health challenges, and chronic conditions triggered by stress are your risks. "
+            "Breathing exercises and consistent therapy or meditation are non-negotiable for your wellbeing."
+        ),
+        'best_years': [24, 28, 34, 38, 42, 53],
+    },
+    'Punarvasu': {
+        'personality': (
+            "You are the eternal optimist who bounces back from setbacks with renewed energy. "
+            "Your basic nature is generous, expansive, and philosophical. You see the bigger picture "
+            "when others are lost in details. You dislike pettiness and small-mindedness. "
+            "Your greatest strength is your ability to start over without bitterness."
+        ),
+        'education_income': (
+            "Teaching, publishing, travel, import-export, philosophy, or spiritual counseling suit you. "
+            "Your income may fluctuate but always recovers. Financial abundance comes in waves, "
+            "with your strongest earning periods after 35."
+        ),
+        'family_life': (
+            "You are a devoted family person who creates a warm, expansive home environment. "
+            "You may live away from your birthplace for significant periods. "
+            "Your children inherit your optimistic nature and benefit from your broad worldview."
+        ),
+        'health': (
+            "Liver issues, weight gain from overeating, and respiratory conditions need watching. "
+            "You recover from illness faster than most due to your inherently positive constitution."
+        ),
+        'best_years': [23, 27, 31, 36, 43, 48],
+    },
+    'Pushya': {
+        'personality': (
+            "You are the nourisher, the one everyone comes to for support and sustenance. Your patience "
+            "is extraordinary, and your emotional steadiness anchors those around you. You are traditional "
+            "in values but practical in approach. You rarely seek the spotlight but wield quiet influence. "
+            "Your greatest risk is neglecting yourself while caring for everyone else."
+        ),
+        'education_income': (
+            "Education, food industry, hospitality, dairy, healthcare, or government service suit you. "
+            "You build wealth slowly and steadily. By your mid-forties, you are typically in a "
+            "comfortable financial position earned through consistent effort."
+        ),
+        'family_life': (
+            "Family is your center of gravity. You sacrifice willingly for children and parents. "
+            "Your home is always open to guests. Marriage is generally stable and supportive, "
+            "though you may feel unappreciated for the invisible work you do."
+        ),
+        'health': (
+            "Water retention, chest congestion, and stomach acidity are your common complaints. "
+            "You tend to eat emotionally. A disciplined diet transforms your health more than any medicine."
+        ),
+        'best_years': [22, 26, 33, 38, 45, 52],
+    },
+    'Ashlesha': {
+        'personality': (
+            "You are deeply perceptive, reading body language and hidden intentions with unsettling "
+            "accuracy. Your mind works in layers, and you rarely take anything at face value. "
+            "You can be manipulative when cornered, but your default mode is observant and strategic. "
+            "Trust is something you give slowly and withdraw quickly. You have hypnotic personal magnetism."
+        ),
+        'education_income': (
+            "Psychology, astrology, politics, pharmacology, poison/toxicology, or detective work suit you. "
+            "You earn well from professions involving secrets or hidden knowledge. "
+            "Financial instincts are sharp, and you rarely make losing investments."
+        ),
+        'family_life': (
+            "Relationships with maternal figures are complicated. Your spouse must accept your need for "
+            "emotional privacy. You are a protective but psychologically intense parent. "
+            "Family dynamics involve undercurrents that outsiders never see."
+        ),
+        'health': (
+            "Digestive issues, nervous disorders, and susceptibility to toxins or food poisoning are "
+            "your vulnerabilities. Detox routines and avoiding processed foods are essential for you."
+        ),
+        'best_years': [19, 27, 30, 36, 42, 48],
+    },
+    'Magha': {
+        'personality': (
+            "You carry a sense of ancestral pride and an innate understanding of hierarchy. "
+            "You demand respect and naturally command it through your bearing. Lineage, tradition, "
+            "and legacy matter deeply to you. You are generous to those who show you loyalty "
+            "but unforgiving toward disrespect. Your presence fills a room."
+        ),
+        'education_income': (
+            "Administration, politics, history, heritage management, government, or family business suit you. "
+            "You often inherit or continue a family professional legacy. "
+            "Your earning potential peaks when you accept leadership positions without hesitation."
+        ),
+        'family_life': (
+            "You treat your home like a kingdom. Family rituals, ancestral customs, and maintaining "
+            "the family name are priorities. Marriage works when your partner respects your lineage. "
+            "Your relationship with your father or father figures defines much of your life trajectory."
+        ),
+        'health': (
+            "Heart conditions, back pain, and issues related to the spine are your primary concerns. "
+            "Royal self-image means you may ignore symptoms until they become serious."
+        ),
+        'best_years': [21, 28, 33, 37, 44, 51],
+    },
+    'Purva Phalguni': {
+        'personality': (
+            "You are pleasure-loving, creative, and socially magnetic. You believe life should be "
+            "enjoyed, not merely endured. Your artistic sensibility is refined, and you have excellent "
+            "taste. You are generous with friends and lovers but can be lazy when unchallenged. "
+            "Your charisma opens doors that hard work alone cannot."
+        ),
+        'education_income': (
+            "Entertainment, arts, luxury goods, event management, or creative media suit you. "
+            "You earn through charm and talent rather than grinding routine. "
+            "Income is good but spending habits need constant monitoring."
+        ),
+        'family_life': (
+            "You are a romantic partner who keeps the spark alive. Your home is tastefully decorated. "
+            "Marriage may face challenges if your partner is overly practical or restrictive. "
+            "Children bring out your playful, youthful side."
+        ),
+        'health': (
+            "Reproductive health, lower back pain, and lifestyle diseases from excess indulgence are your risks. "
+            "Moderation in diet and social activities is your best health strategy."
+        ),
+        'best_years': [22, 25, 31, 36, 44, 50],
+    },
+    'Uttara Phalguni': {
+        'personality': (
+            "You are reliable, dutiful, and focused on social contribution. People trust you with "
+            "responsibility because you deliver consistently. Your approach to life is structured and "
+            "purposeful. You combine warmth with discipline, making you an effective leader. "
+            "You finish what you start, a trait rarer than most realize."
+        ),
+        'education_income': (
+            "Government service, law, social work, corporate management, or philanthropy suit you. "
+            "You build a solid career through competence and integrity. "
+            "Financial growth is steady and predictable, peaking in your forties."
+        ),
+        'family_life': (
+            "You take marriage vows seriously and create a stable, orderly home. Your partner appreciates "
+            "your dependability. You may be stricter than necessary with children but always act from "
+            "genuine concern for their future."
+        ),
+        'health': (
+            "Digestive issues, hernias, and stress-related conditions from overwork are your risks. "
+            "Scheduled relaxation and periodic breaks from responsibility are not luxury but necessity."
+        ),
+        'best_years': [24, 28, 35, 38, 46, 52],
+    },
+    'Hasta': {
+        'personality': (
+            "You are skilled with your hands and mind alike. Craftsmanship, precision, and attention "
+            "to detail define you. You have a sharp wit and can be sarcastically funny. Your practical "
+            "intelligence is exceptional. You sometimes struggle with self-doubt despite your obvious "
+            "competence. You notice flaws others miss, in objects and in people."
+        ),
+        'education_income': (
+            "Crafts, surgery, engineering, accounting, astrology, or any precision-based work suit you. "
+            "You earn through specialized skill rather than general talent. "
+            "Your value in the workplace increases steadily as your expertise deepens."
+        ),
+        'family_life': (
+            "You show love through acts of service rather than words. Your home is well-organized. "
+            "Marriage thrives when your partner recognizes your practical expressions of care. "
+            "You teach your children through doing, not lecturing."
+        ),
+        'health': (
+            "Skin conditions, digestive sensitivity, and nervous tension in the hands and arms are your concerns. "
+            "Repetitive strain injuries are possible if you work with your hands extensively."
+        ),
+        'best_years': [20, 26, 32, 37, 42, 49],
+    },
+    'Chitra': {
+        'personality': (
+            "You are visually oriented, aesthetically driven, and drawn to creating beauty in all forms. "
+            "Your appearance matters to you, and you invest in looking your best. You are ambitious "
+            "with a competitive streak and a desire to be recognized for your unique contributions. "
+            "Your inner world is more complex than your polished exterior suggests."
+        ),
+        'education_income': (
+            "Architecture, fashion design, jewelry, interior design, or visual arts suit you. "
+            "You can also excel in technology or engineering. "
+            "Income rises significantly when you align your work with your aesthetic sensibility."
+        ),
+        'family_life': (
+            "You need a partner who matches your standards of presentation and ambition. "
+            "Superficial disagreements about lifestyle choices can escalate if unmanaged. "
+            "Your home is a showpiece, and you take pride in creating an impressive living space."
+        ),
+        'health': (
+            "Kidney issues, skin problems, and lower abdominal concerns need attention. "
+            "Your health improves when you stop skipping meals for work and prioritize regular eating."
+        ),
+        'best_years': [23, 28, 33, 40, 45, 52],
+    },
+    'Swati': {
+        'personality': (
+            "You are independent, adaptable, and value personal freedom above almost everything. "
+            "You bend without breaking, like the wind. Your diplomatic skills are excellent, and you "
+            "can negotiate your way through situations that defeat more rigid personalities. "
+            "You are fair-minded but indecisive when multiple good options exist."
+        ),
+        'education_income': (
+            "Business, trade, diplomacy, travel, commission-based work, or law suit you. "
+            "You prosper through networking and deal-making. Self-employment suits you better than "
+            "rigid corporate structures. Income fluctuates but averages well."
+        ),
+        'family_life': (
+            "You need space within your relationships. A controlling partner suffocates you. "
+            "You are a fair, balanced parent who teaches independence by example. "
+            "Your family life stabilizes significantly after your mid-thirties."
+        ),
+        'health': (
+            "Kidney and urinary tract issues, skin allergies, and gas-related problems are your weak areas. "
+            "You benefit from drinking plenty of water and avoiding cold, dry foods."
+        ),
+        'best_years': [21, 25, 31, 35, 43, 49],
+    },
+    'Vishakha': {
+        'personality': (
+            "You are goal-obsessed with a single-minded focus that can be both your greatest asset "
+            "and your biggest blind spot. You set targets and pursue them relentlessly. Your ambition "
+            "has a spiritual undertone. You are competitive but also philosophical about success and "
+            "failure. You experience periodic identity crises that force meaningful transformation."
+        ),
+        'education_income': (
+            "Research, politics, marketing, agriculture, or spiritual teaching suit you. "
+            "You often achieve breakthrough success after prolonged struggle. "
+            "Your income graph shows a clear before-and-after point where everything changes."
+        ),
+        'family_life': (
+            "You bring intensity to your relationships that can overwhelm a gentle partner. "
+            "Marriage benefits from shared goals and mutual ambition. "
+            "You push your children to achieve, sometimes harder than they are ready for."
+        ),
+        'health': (
+            "Liver and pancreas issues, hormonal imbalances, and burnout from overwork are your risks. "
+            "Learning to celebrate small wins instead of only the final goal protects your mental health."
+        ),
+        'best_years': [24, 28, 33, 37, 44, 51],
+    },
+    'Anuradha': {
+        'personality': (
+            "You are devoted, emotionally resilient, and capable of thriving in foreign environments. "
+            "You form deep friendships and honor your commitments even when it costs you. You have a "
+            "quiet intensity that people underestimate at their peril. Organization and discipline "
+            "come naturally. You succeed precisely where others have given up."
+        ),
+        'education_income': (
+            "Corporate management, foreign assignments, occult sciences, statistics, or mining suit you. "
+            "You often earn your best income away from your birthplace. "
+            "Career breakthroughs involve a mentor or organizational backing."
+        ),
+        'family_life': (
+            "You are a deeply loyal partner who invests fully in your relationship. Betrayal devastates "
+            "you more than most. You maintain close ties with friends who become like family. "
+            "Your children respect you for your integrity and steadfastness."
+        ),
+        'health': (
+            "Hip and pelvic issues, dental problems, and reproductive health concerns are your vulnerabilities. "
+            "Stress manifests physically for you more than mentally. Regular physical activity is essential."
+        ),
+        'best_years': [23, 27, 33, 38, 45, 50],
+    },
+    'Jyeshtha': {
+        'personality': (
+            "You are the eldest soul in any room, carrying authority and protective instincts "
+            "regardless of your actual birth order. You are resourceful, brave, and quick to take "
+            "charge during crises. Your sharp tongue and commanding manner can create enemies. "
+            "You struggle with jealousy from peers and siblings. Power is your default orientation."
+        ),
+        'education_income': (
+            "Police, military, administration, senior management, or crisis management suit you. "
+            "You earn respect and income through demonstrated competence under pressure. "
+            "Your career is marked by at least one major battle that defines your professional identity."
+        ),
+        'family_life': (
+            "Sibling relationships are complicated and often involve rivalry. Your marriage needs "
+            "a partner who accepts your dominant nature without being subservient. "
+            "You are fiercely protective of your children but may impose your unfulfilled ambitions on them."
+        ),
+        'health': (
+            "Muscular pain, joint issues, and stress-induced conditions are your weak spots. "
+            "Anger and control issues affect your cardiovascular health. Regular de-stressing is critical."
+        ),
+        'best_years': [18, 26, 30, 36, 42, 50],
+    },
+    'Mula': {
+        'personality': (
+            "You are drawn to root causes, hidden truths, and the foundations beneath surface appearances. "
+            "Destruction and reconstruction are recurring themes in your life. You question everything, "
+            "including beliefs you were raised with. Your path involves stripping away the inessential "
+            "to find what truly matters. You can be brutally honest."
+        ),
+        'education_income': (
+            "Research, medicine (especially root-cause diagnosis), philosophy, botany, or investigation suit you. "
+            "Your career may involve a complete restart at least once. "
+            "Your greatest earning potential lies in specialized or niche domains."
+        ),
+        'family_life': (
+            "Family relationships involve fundamental disagreements about values or lifestyle. "
+            "You may distance yourself from your birth family to forge your own path. "
+            "Marriage requires a partner who respects your need to question everything."
+        ),
+        'health': (
+            "Hip and thigh problems, sciatic pain, and genetic or hereditary health conditions need attention. "
+            "Your health often improves dramatically when you resolve deep psychological conflicts."
+        ),
+        'best_years': [19, 27, 31, 36, 42, 48],
+    },
+    'Purva Ashadha': {
+        'personality': (
+            "You are persuasive, optimistic, and have an infectious enthusiasm that wins people over. "
+            "You believe in your vision even when no one else does, and this conviction often proves "
+            "justified. You declare victory before the battle is won, which is both inspiring and "
+            "occasionally premature. Your sense of justice is strong and vocal."
+        ),
+        'education_income': (
+            "Law, public speaking, water-related industries, shipping, or motivational work suit you. "
+            "You earn well from persuasion-based professions. "
+            "International connections or foreign clientele boost your income significantly."
+        ),
+        'family_life': (
+            "You are an enthusiastic partner who keeps the relationship dynamic and forward-looking. "
+            "Your tendency to overcommit socially can leave your family feeling second-priority. "
+            "Children admire your confidence and storytelling ability."
+        ),
+        'health': (
+            "Thigh and hip issues, liver problems, and obesity from social eating are your risks. "
+            "Water-based exercises like swimming suit your constitution perfectly."
+        ),
+        'best_years': [23, 28, 34, 38, 45, 52],
+    },
+    'Uttara Ashadha': {
+        'personality': (
+            "You are principled, unwavering, and committed to doing what is right regardless of personal "
+            "cost. Your integrity is your identity. You are a late bloomer who achieves lasting success "
+            "through sustained effort rather than lucky breaks. You are universally respected even by those "
+            "who disagree with you. Your patience is legendary."
+        ),
+        'education_income': (
+            "Government, judiciary, defense, agriculture, or social reform suit you. "
+            "Career progress is slow but irreversible. You rarely get demoted or sidelined once you "
+            "establish yourself. Your peak earning years are your late forties and fifties."
+        ),
+        'family_life': (
+            "You are a rock-solid partner and parent. Your family relies on your stability. "
+            "Marriage is a lifelong commitment you honor fully. You may marry later than average. "
+            "Your children respect your discipline and learn perseverance from watching you."
+        ),
+        'health': (
+            "Knee problems, bone density issues, and chronic conditions that worsen with age need monitoring. "
+            "Preventive care starting in your thirties pays enormous dividends later."
+        ),
+        'best_years': [26, 30, 36, 42, 48, 55],
+    },
+    'Shravana': {
+        'personality': (
+            "You are an exceptional listener who absorbs information from every conversation. "
+            "Your learning style is auditory, and you remember what you hear with remarkable clarity. "
+            "You are wise beyond your years and often sought out for counsel. Your patience in "
+            "understanding situations fully before acting gives you a decisive advantage."
+        ),
+        'education_income': (
+            "Music, teaching, counseling, telecommunications, media, or knowledge management suit you. "
+            "You earn through wisdom, knowledge transmission, and advisory roles. "
+            "Your career flourishes when you position yourself as an expert or guide."
+        ),
+        'family_life': (
+            "You create a harmonious home through attentive listening and measured responses. "
+            "Your partner values your calm presence. You are the family member everyone calls "
+            "when they need perspective. Your children develop strong communication skills from your example."
+        ),
+        'health': (
+            "Ear infections, hearing issues, and knee or joint problems are your vulnerabilities. "
+            "Protecting your ears from excessive noise is important for your long-term wellbeing."
+        ),
+        'best_years': [22, 28, 33, 39, 44, 51],
+    },
+    'Dhanishtha': {
+        'personality': (
+            "You are ambitious, rhythmically inclined, and drawn to wealth and status. Music and rhythm "
+            "resonate with your soul at a fundamental level. You are generous when prosperous but "
+            "can become ruthlessly competitive when resources are scarce. Your social skills are sharp, "
+            "and you know how to work a room. You set trends rather than follow them."
+        ),
+        'education_income': (
+            "Music, real estate, sports, surgery, or management suit you. "
+            "You have a talent for converting assets into income. Property and fixed assets "
+            "are your strongest wealth-building tools."
+        ),
+        'family_life': (
+            "Marital harmony requires effort, as your ambitious nature can overshadow domestic duties. "
+            "Delayed marriage or initial adjustment difficulties are common. "
+            "Once settled, you build a prosperous household that others admire."
+        ),
+        'health': (
+            "Blood pressure, anemia, and bone-marrow related issues need monitoring. "
+            "Rhythmic exercise like walking to music or dancing keeps you physically balanced."
+        ),
+        'best_years': [24, 28, 35, 40, 46, 53],
+    },
+    'Shatabhisha': {
+        'personality': (
+            "You are a lone wolf with a healer's heart. You prefer working independently and can "
+            "seem secretive or aloof to those who do not know you well. Your analytical mind excels "
+            "at solving puzzles nobody else can crack. You have a contrarian streak and instinctively "
+            "challenge mainstream thinking. Your independence is non-negotiable."
+        ),
+        'education_income': (
+            "Medicine, technology, astrology, aviation, or space sciences suit you. "
+            "You excel in roles that require solitary focus and technical depth. "
+            "Your income grows when you embrace your specialist nature rather than trying to generalize."
+        ),
+        'family_life': (
+            "Relationships require you to overcome your emotional guardedness. Your partner must accept "
+            "your need for solitude without taking it personally. You are a thoughtful parent who teaches "
+            "children to think for themselves."
+        ),
+        'health': (
+            "Heart palpitations, calf muscle issues, and circulatory problems are your health concerns. "
+            "You respond well to alternative medicine and holistic healing approaches."
+        ),
+        'best_years': [23, 29, 34, 38, 44, 51],
+    },
+    'Purva Bhadrapada': {
+        'personality': (
+            "You oscillate between worldly ambition and spiritual intensity. One part of you wants "
+            "material success, the other craves transcendence. This internal tension makes you a "
+            "powerful force when channeled correctly. You are passionate to the point of extremism "
+            "and can be either profoundly generous or fiercely punishing."
+        ),
+        'education_income': (
+            "Finance, occult studies, research, insurance, or transformative industries suit you. "
+            "Your income often comes through unconventional channels. "
+            "A spiritual practice paradoxically improves your material earning capacity."
+        ),
+        'family_life': (
+            "You bring intensity to domestic life that can be both nurturing and overwhelming. "
+            "Your partner needs emotional resilience. Family life improves dramatically when you "
+            "find a spiritual outlet for your intensity rather than directing it at loved ones."
+        ),
+        'health': (
+            "Swollen ankles, liver problems, and stress-induced conditions are your risks. "
+            "Your health is directly tied to your mental state. Inner peace equals physical health for you."
+        ),
+        'best_years': [24, 28, 33, 40, 46, 53],
+    },
+    'Uttara Bhadrapada': {
+        'personality': (
+            "You are deeply compassionate, wise, and naturally inclined toward spirituality. "
+            "Your patience and endurance are remarkable. You think in long time horizons and rarely "
+            "panic over short-term setbacks. You have a gift for counseling and healing. "
+            "Your calm exterior conceals depths that most people never see."
+        ),
+        'education_income': (
+            "Charity work, spiritual teaching, counseling, marine industries, or research suit you. "
+            "You may not chase money aggressively, but it finds you through your service and wisdom. "
+            "Late-career recognition and financial rewards are your pattern."
+        ),
+        'family_life': (
+            "You create a peaceful, spiritually oriented home. Your partner appreciates your "
+            "emotional depth and stability. You are a wise parent who guides without controlling. "
+            "Family members turn to you as the anchor during crises."
+        ),
+        'health': (
+            "Foot problems, sleep disorders, and issues related to the lymphatic system are your concerns. "
+            "Adequate sleep and foot care are simple but essential health practices for you."
+        ),
+        'best_years': [25, 30, 36, 42, 48, 55],
+    },
+    'Revati': {
+        'personality': (
+            "You are the nurturer of the zodiac, gentle, empathetic, and naturally protective of "
+            "the vulnerable. Your imagination is vivid and your creative abilities are strong. "
+            "You see potential in people and situations that others have written off. Your weakness "
+            "is being overly trusting and sometimes naive about others' intentions."
+        ),
+        'education_income': (
+            "Creative arts, marine biology, travel, hospitality, or healing professions suit you. "
+            "You prosper in environments that value empathy and creativity. "
+            "Your income improves when you stop undervaluing your own contributions."
+        ),
+        'family_life': (
+            "You pour love into your family with complete selflessness. Your home is a sanctuary "
+            "for anyone who needs shelter. Marriage is deeply fulfilling when your partner reciprocates "
+            "your emotional generosity. Your children are creative and sensitive."
+        ),
+        'health': (
+            "Foot ailments, allergies, and immune system sensitivity are your health concerns. "
+            "You absorb stress from others physically. Energy clearing practices and adequate rest are vital."
+        ),
+        'best_years': [22, 27, 33, 38, 44, 50],
+    },
+}
+
+
+def get_nakshatra_phal(chart):
+    """Detailed Moon nakshatra reading for the person."""
+    moon_nak = chart['planets']['Moon']['nakshatra']
+    moon_pada = chart['planets']['Moon']['pada']
+    moon_sign = chart['planets']['Moon']['sign']
+    moon_lord = SIGN_LORDS.get(moon_sign, 'Moon')
+    nak_lord = chart['planets']['Moon']['nakshatra_lord']
+
+    phal = _NAKSHATRA_PHAL.get(moon_nak, {})
+
+    return {
+        'nakshatra': moon_nak,
+        'pada': moon_pada,
+        'nakshatra_lord': nak_lord,
+        'moon_sign': moon_sign,
+        'moon_sign_lord': moon_lord,
+        'personality': phal.get('personality', ''),
+        'education_income': phal.get('education_income', ''),
+        'family_life': phal.get('family_life', ''),
+        'health': phal.get('health', ''),
+        'best_years': phal.get('best_years', []),
+    }
+
+
+# ════════════════════════════════════════════════════════════════
 # MASTER FUNCTION
 # ════════════════════════════════════════════════════════════════
 
@@ -3499,4 +4481,8 @@ def generate_all_predictions(chart):
         'house_strengthening': get_house_strengthening(chart),
         'karmic_lessons': get_karmic_lessons(chart),
         'daily_rituals': get_daily_rituals(chart),
+        'lucky_points': get_lucky_points(chart),
+        'sade_sati': get_sade_sati(chart),
+        'avkahada_chakra': get_avkahada_chakra(chart),
+        'nakshatra_phal': get_nakshatra_phal(chart),
     }

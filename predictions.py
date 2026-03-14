@@ -3317,9 +3317,9 @@ def get_lucky_points(chart):
     moon_num = _PLANET_NUMEROLOGY.get(moon_lord, 2)
     good_numbers = sorted(set([asc_num, moon_num]))
 
-    # Evil numbers: enemy planets of ascendant lord
+    # Evil numbers: enemy planets of ascendant lord (exclude any that are also good)
     enemies = NATURAL_ENEMIES.get(asc_lord, [])
-    evil_numbers = sorted(set(_PLANET_NUMEROLOGY.get(e, 0) for e in enemies))
+    evil_numbers = sorted(set(n for n in (_PLANET_NUMEROLOGY.get(e, 0) for e in enemies) if n not in good_numbers))
 
     # Lucky days: ascendant lord's day + friends' days
     friends = NATURAL_FRIENDS.get(asc_lord, [])

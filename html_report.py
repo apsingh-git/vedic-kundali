@@ -182,11 +182,18 @@ def generate_html_report(chart, yogas_list, output_path=None):
   .light img {{ filter: brightness(1.1) contrast(0.9); }}
 
   * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-  html {{ scroll-behavior: smooth; scroll-padding-top: 20px; overflow-x: hidden; }}
-  /* Prevent tables from pushing page width */
-  table, .data-table, .pred-grid {{ max-width: 100%; }}
-  .table-scroll {{ overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; }}
+  html {{ scroll-behavior: smooth; scroll-padding-top: 20px; overflow-x: hidden; overscroll-behavior-x: none; }}
+  body {{ overscroll-behavior-x: none; }}
+  /* Prevent tables and grids from pushing page width */
+  table, .data-table {{ max-width: 100%; }}
+  .table-scroll {{ overflow-x: auto; -webkit-overflow-scrolling: touch; max-width: 100%; overscroll-behavior-x: contain; }}
+  .pred-grid {{ max-width: 100%; }}
   .container {{ overflow-x: hidden; }}
+  /* Charts responsive */
+  .chart-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }}
+  .chart-box img {{ max-width: 100%; height: auto; }}
+  /* Life cards responsive */
+  .life-grid {{ display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }}
 
   body {{
     font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -276,7 +283,7 @@ def generate_html_report(chart, yogas_list, output_path=None):
   /* ── Chart Grid ─────────────────────────── */
   .chart-grid {{
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 20px;
   }}
   .chart-box {{
@@ -999,7 +1006,7 @@ def _vargottama_note(vargottama):
 
 
 def _divisional_tables(chart):
-    html = '<div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:16px;">'
+    html = '<div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:16px; margin-top:16px;">'
     for key, label in [('D9', 'Navamsha (D9)'), ('D10', 'Dasamsha (D10)')]:
         div = chart['divisional'][key]
         html += f'<div class="card card-alt"><strong style="color:var(--accent); font-size:0.8rem;">{label}</strong>'
@@ -1801,18 +1808,18 @@ def _render_toc():
     """Table of contents for prediction sections."""
     links = [
         ('lucky-points', 'Lucky Points'),
-        ('avkahada', 'Avkahada Chakra'),
         ('nakshatra-phal', 'Nakshatra Phal'),
-        ('doshas', 'Doshas'),
-        ('planetary-analysis', 'Planetary Analysis'),
-        ('lal-kitab', 'Lal Kitab'),
         ('life-predictions', 'Life Predictions'),
         ('yearly-forecast', '10-Year Forecast'),
+        ('doshas', 'Doshas'),
         ('sade-sati', 'Sade Sati'),
+        ('planetary-analysis', 'Planets'),
+        ('lal-kitab', 'Lal Kitab'),
         ('remedies', 'Remedies'),
-        ('house-strength', 'House Strength'),
-        ('karmic-lessons', 'Karmic Lessons'),
         ('daily-rituals', 'Daily Rituals'),
+        ('house-strength', 'House Strength'),
+        ('avkahada', 'Avkahada'),
+        ('karmic-lessons', 'Karmic Lessons'),
     ]
     items = ' '.join(f'<a href="#{id_}">{label}</a>' for id_, label in links)
     return f'''<div class="nav-toc">
@@ -2282,19 +2289,25 @@ def _render_nakshatra_phal(np):
 
 
 def _render_all_predictions(pred):
-    """Render all prediction sections into HTML."""
+    """Render all prediction sections — ordered for maximum engagement."""
     html = _render_toc()
+    # 1. Quick wins — instantly engaging
     html += _render_lucky_points(pred.get('lucky_points'))
-    html += _render_avkahada(pred.get('avkahada_chakra'))
     html += _render_nakshatra_phal(pred.get('nakshatra_phal'))
-    html += _render_doshas(pred['doshas'])
-    html += _render_planetary_analysis(pred['planetary_analysis'])
-    html += _render_lal_kitab(pred['lal_kitab'])
+    # 2. What people came for — life answers
     html += _render_life_predictions(pred['life_predictions'])
     html += _render_yearly_forecast(pred['yearly_forecast'])
+    # 3. Doshas and Sade Sati — am I affected?
+    html += _render_doshas(pred['doshas'])
     html += _render_sade_sati(pred.get('sade_sati'))
+    # 4. Deep planetary readings
+    html += _render_planetary_analysis(pred['planetary_analysis'])
+    html += _render_lal_kitab(pred['lal_kitab'])
+    # 5. Remedies and actions
     html += _render_remedies(pred['remedies'])
-    html += _render_house_strengthening(pred['house_strengthening'])
-    html += _render_karmic_lessons(pred['karmic_lessons'])
     html += _render_daily_rituals(pred['daily_rituals'])
+    # 6. Technical / reference
+    html += _render_house_strengthening(pred['house_strengthening'])
+    html += _render_avkahada(pred.get('avkahada_chakra'))
+    html += _render_karmic_lessons(pred['karmic_lessons'])
     return html

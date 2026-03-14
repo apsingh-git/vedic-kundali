@@ -10,6 +10,7 @@ import html as html_lib
 from collections import defaultdict
 from flask import Flask, render_template, request, abort, make_response
 
+import pgeocode
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut, GeocoderServiceError, GeocoderUnavailable
 
@@ -19,6 +20,14 @@ from html_report import generate_html_report
 from constants import CITY_DB
 
 _geocoder = Nominatim(user_agent='vedic-kundali', timeout=5)
+_pincode_db = None  # lazy init
+
+
+def _get_pincode_db():
+    global _pincode_db
+    if _pincode_db is None:
+        _pincode_db = pgeocode.Nominatim('in')
+    return _pincode_db
 
 app = Flask(__name__)
 
@@ -116,21 +125,35 @@ def generate():
         return render_template('index.html', errors=['Invalid time. Use the time picker.'],
                                name=name, date=date_str, time=time_str, city=city_raw)
 
-    # Lookup city: 1) local DB exact, 2) local DB partial, 3) geocode via OpenStreetMap
-    coords = CITY_DB.get(city)
+    # Lookup: 1) pincode via pgeocode, 2) local DB exact, 3) local DB partial, 4) geopy geocode
+    coords = None
+    clean_input = city.strip()
+
+    # Step 1: If 6-digit number, use pgeocode (offline Indian pincode DB)
+    if clean_input.isdigit() and len(clean_input) == 6:
+        try:
+            result = _get_pincode_db().query_postal_code(clean_input)
+            if result is not None and not (result.latitude != result.latitude):  # NaN check
+                coords = (float(result.latitude), float(result.longitude))
+        except Exception:
+            pass
+
+    # Step 2: Local city DB exact match
     if not coords:
-        matches = [k for k in CITY_DB if city in k or k in city]
+        coords = CITY_DB.get(clean_input)
+
+    # Step 3: Local city DB partial match
+    if not coords:
+        matches = [k for k in CITY_DB if clean_input in k or k in clean_input]
         if matches:
             coords = CITY_DB[matches[0]]
 
+    # Step 4: Geopy/Nominatim fallback (any town, village, locality)
     if not coords:
-        # Fallback: geocode via Nominatim (handles any town, village, or pincode)
         try:
-            query = city_raw
-            if query.isdigit() and len(query) == 6:
-                query = f'{query}, India'  # Indian pincode
-            elif not any(c.isdigit() for c in query):
-                query = f'{query}, India'  # Add India context for better results
+            query = city_raw.strip()
+            if not any(c.isdigit() for c in query):
+                query = f'{query}, India'
             location = _geocoder.geocode(query)
             if location:
                 coords = (location.latitude, location.longitude)
@@ -139,7 +162,7 @@ def generate():
 
     if not coords:
         return render_template('index.html',
-                               errors=['Place not found. Try a city name, town, or 6-digit Indian pincode.'],
+                               errors=['Place not found. Try a city name, town, village, or 6-digit Indian pincode.'],
                                name=name, date=date_str, time=time_str, city=city_raw)
 
     lat, lon = coords

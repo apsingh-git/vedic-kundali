@@ -4528,6 +4528,19 @@ def get_faq(chart, pred):
     now = datetime.now(now_tz) if now_tz else None
     current_age = (now.year - birth_year) if now else 30
 
+    # Profile data (optional fields from form)
+    gender = chart['birth'].get('gender', '')
+    is_married = chart['birth'].get('married', '') == 'yes'
+    is_unmarried = chart['birth'].get('married', '') == 'no'
+    has_children = chart['birth'].get('has_children', '') == 'yes'
+    no_children = chart['birth'].get('has_children', '') == 'no'
+
+    # Age group
+    is_teen = current_age < 20
+    is_young = 20 <= current_age < 32
+    is_mid = 32 <= current_age < 50
+    is_senior = current_age >= 50
+
     def _current_dasha():
         for d in dashas['dashas']:
             if d.get('is_current'):
@@ -4682,15 +4695,38 @@ def get_faq(chart, pred):
             f'Watch for Venus or Jupiter sub-periods within your current cycle for the best timing.'
         )
 
-    faqs.append({
-        'question': 'When will I get married? What will my spouse be like?',
-        'answer': (
-            f'{marriage_timing} '
-            f'{venus_quality} '
-            f'Your spouse is likely to be {spouse_hints.get(spouse_sign, "a good match")}. '
-            f'{"Matching charts with your partner is recommended, as Mars in your chart creates some intensity in relationships." if mars_house in (1,2,4,7,8,12) else ""}'
-        ),
-    })
+    if is_married:
+        faqs.append({
+            'question': 'How can I strengthen my marriage?',
+            'answer': (
+                f'{venus_quality} '
+                f'Your spouse is likely {spouse_hints.get(spouse_sign, "a good match")} by nature. '
+                f'{marriage_timing.replace("window for marriage", "window for deepening your relationship")} '
+                f'To strengthen your bond: respect your partner\'s nature, communicate openly during challenging planetary periods, '
+                f'and worship together on Fridays (Venus\'s day). '
+                f'{"Mars in your chart adds passion but also intensity — practice patience during disagreements." if mars_house in (1,2,4,7,8,12) else ""}'
+            ),
+        })
+    elif is_teen:
+        faqs.append({
+            'question': 'What kind of partner will I have in the future?',
+            'answer': (
+                f'Based on your chart, your future partner is likely to be {spouse_hints.get(spouse_sign, "a good match")}. '
+                f'{venus_quality} '
+                f'{marriage_timing} '
+                f'Focus on building yourself first — career and education should be your priority right now.'
+            ),
+        })
+    else:
+        faqs.append({
+            'question': 'When will I get married? What will my spouse be like?',
+            'answer': (
+                f'{marriage_timing} '
+                f'{venus_quality} '
+                f'Your spouse is likely to be {spouse_hints.get(spouse_sign, "a good match")}. '
+                f'{"Matching charts with your partner is recommended, as Mars in your chart creates some intensity in relationships." if mars_house in (1,2,4,7,8,12) else ""}'
+            ),
+        })
 
     # ══════════════════════════════════════════════════════════
     # 2. CAREER + SUCCESS
@@ -4997,14 +5033,27 @@ def get_faq(chart, pred):
     elif h5_sign in ('Cancer', 'Pisces', 'Taurus', 'Libra'):
         child_trait = 'Your children will likely be artistic, gentle, and emotionally connected to you.'
 
-    faqs.append({
-        'question': 'Will I have children? When is the best time?',
-        'answer': (
-            f'{child_nature} '
-            f'{child_timing} '
-            f'{child_trait}'
-        ),
-    })
+    if has_children:
+        faqs.append({
+            'question': 'What does my chart say about my children\'s future?',
+            'answer': (
+                f'{child_nature} '
+                f'{child_trait} '
+                f'Your children will do best during your favorable planetary periods. '
+                f'Support their education and interests especially during Jupiter\'s active phases in your chart.'
+            ),
+        })
+    elif is_teen:
+        pass  # Skip children question for teens
+    else:
+        faqs.append({
+            'question': 'Will I have children? When is the best time?',
+            'answer': (
+                f'{child_nature} '
+                f'{child_timing} '
+                f'{child_trait}'
+            ),
+        })
 
     # ══════════════════════════════════════════════════════════
     # 9. MANGLIK STATUS

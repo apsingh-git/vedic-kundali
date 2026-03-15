@@ -89,6 +89,10 @@ def generate():
     time_str = _sanitize(request.form.get('time', ''), max_len=5)
     city_raw = request.form.get('city', '').strip()
     city = _sanitize(city_raw, max_len=60).lower()
+    gender = request.form.get('gender', '').lower()
+    married = request.form.get('married', '').lower()
+    children = request.form.get('children', '').lower()
+    state = _sanitize(request.form.get('state', ''), max_len=40)
 
     # Validate presence
     errors = []
@@ -113,7 +117,8 @@ def generate():
             raise ValueError('out of range')
     except (ValueError, IndexError):
         return render_template('index.html', errors=['Invalid date. Use the date picker.'],
-                               name=name, date=date_str, time=time_str, city=city_raw)
+                               name=name, date=date_str, time=time_str, city=city_raw,
+                               gender=gender, married=married, children=children, state=state)
 
     # Parse and validate time
     try:
@@ -123,7 +128,8 @@ def generate():
             raise ValueError('out of range')
     except (ValueError, IndexError):
         return render_template('index.html', errors=['Invalid time. Use the time picker.'],
-                               name=name, date=date_str, time=time_str, city=city_raw)
+                               name=name, date=date_str, time=time_str, city=city_raw,
+                               gender=gender, married=married, children=children, state=state)
 
     # Lookup: 1) pincode via pgeocode, 2) local DB exact, 3) local DB partial, 4) geopy geocode
     coords = None
@@ -152,7 +158,9 @@ def generate():
     if not coords:
         try:
             query = city_raw.strip()
-            if not any(c.isdigit() for c in query):
+            if state:
+                query = f'{query}, {state}, India'
+            elif not any(c.isdigit() for c in query):
                 query = f'{query}, India'
             location = _geocoder.geocode(query)
             if location:
@@ -163,7 +171,8 @@ def generate():
     if not coords:
         return render_template('index.html',
                                errors=['Place not found. Try a city name, town, village, or 6-digit Indian pincode.'],
-                               name=name, date=date_str, time=time_str, city=city_raw)
+                               name=name, date=date_str, time=time_str, city=city_raw,
+                               gender=gender, married=married, children=children, state=state)
 
     lat, lon = coords
 
@@ -171,6 +180,9 @@ def generate():
     try:
         chart = calculate_chart(year, month, day, hour, minute, lat, lon)
         chart['birth']['name'] = html_lib.escape(name)
+        chart['birth']['gender'] = gender if gender in ('male', 'female') else ''
+        chart['birth']['married'] = married if married in ('yes', 'no') else ''
+        chart['birth']['has_children'] = children if children in ('yes', 'no') else ''
         yogas_list = identify_all_yogas(chart)
         report_html = generate_html_report(chart, yogas_list)
         response = make_response(report_html)
@@ -182,7 +194,8 @@ def generate():
     except Exception:
         return render_template('index.html',
                                errors=['Something went wrong generating the chart. Please check your inputs.'],
-                               name=name, date=date_str, time=time_str, city=city_raw)
+                               name=name, date=date_str, time=time_str, city=city_raw,
+                               gender=gender, married=married, children=children, state=state)
 
 
 @app.after_request

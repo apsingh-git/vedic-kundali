@@ -122,6 +122,38 @@
     margin-top: 4px;
   }
 
+  .toggle-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .toggle-group input[type="radio"] { display: none; }
+  .toggle-group label {
+    padding: 10px 16px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    cursor: pointer;
+    transition: all 0.2s;
+    flex: 1;
+    text-align: center;
+  }
+  .toggle-group input[type="radio"]:checked + label {
+    border-color: var(--accent);
+    color: var(--text-bright);
+    background: rgba(233, 69, 96, 0.1);
+  }
+  .optional-tag {
+    font-size: 0.65rem;
+    color: var(--text-dim);
+    font-weight: 400;
+    margin-left: 6px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
   .btn {
     width: 100%;
     padding: 16px;
@@ -233,10 +265,47 @@
       </div>
     </div>
 
+    <div class="field-row">
+      <div class="field" style="flex:2;">
+        <label>Place of Birth</label>
+        <input type="text" name="city" placeholder="City, town, or pincode" value="{{ city or '' }}" required autocomplete="off">
+      </div>
+      <div class="field" style="flex:1;">
+        <label>State <span class="optional-tag">optional</span></label>
+        <input type="text" name="state" placeholder="e.g. Maharashtra" value="{{ state or '' }}" autocomplete="off">
+      </div>
+    </div>
+    <div class="field-hint" style="margin-top:-12px; margin-bottom:12px;">Any Indian city, town, village, or pincode</div>
+
     <div class="field">
-      <label>Place of Birth</label>
-      <input type="text" name="city" placeholder="City, town, or 6-digit pincode" value="{{ city or '' }}" required autocomplete="off">
-      <div class="field-hint">Any Indian city, town, village, or pincode</div>
+      <label>Gender <span class="optional-tag">optional</span></label>
+      <div class="toggle-group">
+        <input type="radio" name="gender" id="g-m" value="male" {{ 'checked' if gender == 'male' else '' }}>
+        <label for="g-m">Male</label>
+        <input type="radio" name="gender" id="g-f" value="female" {{ 'checked' if gender == 'female' else '' }}>
+        <label for="g-f">Female</label>
+      </div>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Married? <span class="optional-tag">optional</span></label>
+        <div class="toggle-group">
+          <input type="radio" name="married" id="m-y" value="yes" {{ 'checked' if married == 'yes' else '' }}>
+          <label for="m-y">Yes</label>
+          <input type="radio" name="married" id="m-n" value="no" {{ 'checked' if married == 'no' else '' }}>
+          <label for="m-n">No</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Children? <span class="optional-tag">optional</span></label>
+        <div class="toggle-group">
+          <input type="radio" name="children" id="c-y" value="yes" {{ 'checked' if children == 'yes' else '' }}>
+          <label for="c-y">Yes</label>
+          <input type="radio" name="children" id="c-n" value="no" {{ 'checked' if children == 'no' else '' }}>
+          <label for="c-n">No</label>
+        </div>
+      </div>
     </div>
 
     <button type="submit" class="btn" id="submitBtn">

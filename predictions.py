@@ -4487,21 +4487,32 @@ def get_faq(chart, pred):
 
     birth_year = chart['birth']['year']
     max_year = birth_year + 80  # realistic lifetime cap
+    now_tz = dashas['dashas'][0]['start'].tzinfo if dashas['dashas'] else None
+    now = datetime.now(now_tz) if now_tz else None
+    current_age = (now.year - birth_year) if now else 30
 
-    # Helper: find dasha periods for a planet (within lifetime)
     def _dasha_period(planet_name):
+        """First dasha period for this planet within lifetime."""
         for d in dashas['dashas']:
             if d['lord'] == planet_name and d['start'].year <= max_year:
                 return f"{d['start'].strftime('%b %Y')} to {d['end'].strftime('%b %Y')}"
         return ''
 
-    # Helper: find FUTURE or CURRENT dasha for a planet
-    def _future_dasha(planet_name):
-        now = datetime.now(dashas['dashas'][0]['start'].tzinfo)
+    def _relevant_dasha(planet_name, min_age=16, max_age=70):
+        """Find dasha for this planet that falls within a realistic age range.
+        Prefers future/current periods, falls back to past if none in range."""
+        best = None
         for d in dashas['dashas']:
-            if d['lord'] == planet_name and d['end'] > now and d['start'].year <= max_year:
-                return f"{d['start'].strftime('%b %Y')} to {d['end'].strftime('%b %Y')}"
-        return ''
+            start_age = d['start'].year - birth_year
+            end_age = d['end'].year - birth_year
+            # Period overlaps with the realistic age window
+            if end_age >= min_age and start_age <= max_age:
+                # Prefer future/current over past
+                if now and d['end'] > now:
+                    return f"{d['start'].strftime('%b %Y')} to {d['end'].strftime('%b %Y')}", start_age, end_age
+                if best is None:
+                    best = (f"{d['start'].strftime('%b %Y')} to {d['end'].strftime('%b %Y')}", start_age, end_age)
+        return best if best else ('', 0, 0)
 
     def _current_dasha():
         for d in dashas['dashas']:
@@ -4540,43 +4551,39 @@ def get_faq(chart, pred):
     moon = planets['Moon']
 
     # ── 1. Marriage ──
-    now = datetime.now(dashas['dashas'][0]['start'].tzinfo) if dashas['dashas'] else None
-    current_age = (now.year - birth_year) if now else 30
+    # Find best marriage dasha within marriage-realistic age (18-50)
+    m_venus = _relevant_dasha('Venus', min_age=18, max_age=50)
+    m_l7 = _relevant_dasha(l7, min_age=18, max_age=50) if l7 != 'Venus' else ('', 0, 0)
+    # Pick the best one, avoid duplicates, clamp display ages to 18-50
+    def _clamp_marriage(p, sa, ea):
+        if not p: return ''
+        ds, de = max(sa, 18), min(ea, 50)
+        return f'{p} (age {ds}-{de})' if ds < de else ''
 
-    # Find ALL marriage-relevant dasha periods within lifetime
-    marriage_past = []
-    marriage_future = []
-    for d in dashas['dashas']:
-        if d['lord'] in (l7, 'Venus') and d['start'].year <= max_year:
-            age_at_start = d['start'].year - birth_year
-            label = f"{d['start'].strftime('%Y')}-{d['end'].strftime('%Y')} (age {age_at_start}-{d['end'].year - birth_year})"
-            if now and d['end'] <= now:
-                marriage_past.append(label)
-            elif now and d['start'] <= now:
-                marriage_future.append(label + ' — currently active')
-            elif now:
-                marriage_future.append(label)
+    marriage_period_text = ''
+    t1 = _clamp_marriage(*m_venus)
+    t2 = _clamp_marriage(*m_l7)
+    if t1 and t2 and t1 != t2:
+        marriage_period_text = f'{t1} and {t2}'
+    elif t1:
+        marriage_period_text = t1
+    elif t2:
+        marriage_period_text = t2
 
-    # Build marriage timing text — filter out unrealistic ages
-    marriage_future_realistic = [p for p in marriage_future if not any(f'age {a}' in p for a in range(60, 100))]
-
-    if marriage_future_realistic:
-        marriage_timing = f'Your most favorable period for marriage is {marriage_future_realistic[0]}.'
-    elif marriage_past:
-        marriage_timing = (
-            f'Your prime marriage window was {marriage_past[-1]}. If you are already married, '
-            f'your partner likely came into your life during that time. '
-            f'Your current {maha_lord or "dasha"} period can still bring new relationships or deepen existing ones through favorable sub-periods.'
-        )
-    elif marriage_future:
-        # Only unrealistically far periods remain — don't show them
-        marriage_timing = (
-            f'Your main marriage-related planetary periods have already passed. '
-            f'If you are already married, those periods brought your partner. '
-            f'For new relationships, your current {maha_lord or "dasha"} period can bring opportunities through favorable sub-periods and transits.'
-        )
+    if marriage_period_text:
+        if current_age > 45:
+            marriage_timing = (
+                f'Your strongest marriage-related period was {marriage_period_text}. '
+                f'If you are already married, your partner came during that window. '
+                f'Your current {maha_lord or "dasha"} period can deepen existing bonds or bring new companionship.'
+            )
+        else:
+            marriage_timing = f'Your most favorable period for marriage is {marriage_period_text}.'
     else:
-        marriage_timing = f'Your current {maha_lord or "dasha"} period can bring partnership opportunities through favorable sub-periods.'
+        marriage_timing = (
+            f'Your current {maha_lord or "dasha"} period supports relationships through favorable sub-periods. '
+            f'Marriage timing also depends on Jupiter and Venus transits over your 7th house.'
+        )
 
     venus_quality = 'Your Venus is strong, which means love and romance flow naturally in your life.' if venus['dignity'] in ('Exalted', 'Own Sign', 'Friendly') else 'Your Venus needs some support — you may need to put extra effort into expressing love and keeping romance alive.'
     spouse_sign = houses[7]['sign']
@@ -4602,23 +4609,20 @@ def get_faq(chart, pred):
     # ── 2. Career ──
     career_fields = career_map.get(houses[10]['sign'], 'various fields')
     l10_strong = planets[l10]['dignity'] in ('Exalted', 'Own Sign', 'Friendly', 'Moolatrikona')
-    career_period = _future_dasha(l10) or _dasha_period(l10)
-    # Convert period to age range for readability
-    career_age_text = ''
-    if career_period:
-        try:
-            start_yr = int(career_period.split(' ')[0].split(' ')[-1].split('-')[0])
-            end_parts = career_period.split(' to ')
-            end_yr = int(end_parts[1].split(' ')[0].split('-')[0]) if len(end_parts) > 1 else start_yr + 10
-            career_age_text = f' (roughly age {start_yr - birth_year} to {end_yr - birth_year})'
-        except (ValueError, IndexError):
-            pass
+    c_period, c_start_age, c_end_age = _relevant_dasha(l10, min_age=20, max_age=65)
+    # Clamp displayed ages to working range
+    if c_period:
+        display_start = max(c_start_age, 20)
+        display_end = min(c_end_age, 65)
+        career_period_text = f'{c_period} (age {display_start}-{display_end})' if display_start < display_end else ''
+    else:
+        career_period_text = ''
     faqs.append({
         'question': 'What career is best for me? Will I be successful?',
         'answer': (
             f'Your chart points toward success in {career_fields}. '
             f'{"You have natural talent and support for career growth — promotions and recognition come with moderate effort. " if l10_strong else "Your career path may have some bumps early on, but persistence pays off. You may switch jobs or fields before finding your groove. "}'
-            f'{"Your best career growth period is " + career_period + career_age_text + ". " if career_period else ""}'
+            f'{"Your best career growth period is " + career_period_text + ". " if career_period_text else ""}'
             f'{"Right now, during your " + maha_lord + " period, " + ("career matters are active and progressing. " if planets[maha_lord]["house"] in (1,2,10,11) else "focus on building skills — the big career push comes later. ") if maha_lord else ""}'
         ),
     })
@@ -4715,14 +4719,29 @@ def get_faq(chart, pred):
     # ── 8. Children ──
     jup_strong = jupiter['dignity'] in ('Exalted', 'Own Sign', 'Friendly')
     l5_strong = planets[l5]['dignity'] in ('Exalted', 'Own Sign', 'Friendly')
-    child_period = _future_dasha(l5)
-    jup_period = _future_dasha('Jupiter')
+    ch_period, ch_sa, ch_ea = _relevant_dasha(l5, min_age=22, max_age=45)
+    jp_period, jp_sa, jp_ea = _relevant_dasha('Jupiter', min_age=22, max_age=45)
+    child_text = ''
+    if ch_period:
+        ch_ds, ch_de = max(ch_sa, 22), min(ch_ea, 42)
+        if ch_ds < ch_de:
+            child_text = f'The best time for planning children is during {ch_period} (age {ch_ds}-{ch_de}). '
+    if jp_period and jp_period != ch_period:
+        jp_ds, jp_de = max(jp_sa, 22), min(jp_ea, 42)
+        if jp_ds < jp_de:
+            child_text += f'Another favorable window is {jp_period} (age {jp_ds}-{jp_de}). '
+    if not child_text:
+        if current_age < 22:
+            child_text = 'You are young — children will come at the right time as your chart matures. '
+        elif current_age > 45:
+            child_text = 'If you already have children, they are a blessing from earlier favorable periods. '
+        else:
+            child_text = f'Your current {maha_lord or "dasha"} period can support family planning. '
     faqs.append({
         'question': 'Will I have children? When is the best time?',
         'answer': (
             f'{"Your chart is favorable for children. They will bring joy and pride to your life. " if jup_strong or l5_strong else "Children are indicated in your chart, though there may be some delays or you may need patience. "}'
-            f'{"The best time for planning children is during " + child_period + ". " if child_period else ""}'
-            f'{"Another favorable window is during " + jup_period + ". " if jup_period and jup_period != child_period else ""}'
+            f'{child_text}'
             f'{"Your firstborn may be more intellectually inclined. " if houses[5]["sign"] in ("Gemini", "Virgo", "Aquarius") else ""}'
             f'{"Your children are likely to be active, energetic, and possibly involved in sports. " if houses[5]["sign"] in ("Aries", "Leo", "Sagittarius") else ""}'
             f'{"Your children will likely be artistic, gentle, and emotionally connected to you. " if houses[5]["sign"] in ("Cancer", "Pisces", "Taurus", "Libra") else ""}'
